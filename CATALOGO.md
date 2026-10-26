@@ -14,7 +14,7 @@ Atualizado em 26/10/2026. Pesquisa do Dendro no GitHub público. Só entram skil
 | sinapse-social-media | Sinapse | **Só proposta.** Salvar pelo cartão |
 | axon-cortes | Axon | **Só proposta.** Salvar pelo cartão |
 | dendro-concorrentes | Dendro | **Só proposta** (rodada 3) |
-| ciclos-dos-agentes | Todos | **Só proposta** (rodada 3) |
+| ciclos-dos-agentes | Todos | **Só no repositório.** Cartão a reenviar (limite de propostas atingido) |
 
 A versão mais nova de cada uma está nas pastas deste repositório.
 
