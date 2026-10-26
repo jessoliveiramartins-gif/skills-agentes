@@ -14,6 +14,7 @@ Atualizado em 26/10/2026. Pesquisa do Dendro no GitHub público. Só entram skil
 | sinapse-social-media | Sinapse | **Só proposta.** Salvar pelo cartão |
 | axon-cortes | Axon | **Só proposta.** Salvar pelo cartão |
 | dendro-concorrentes | Dendro | **Só proposta** (rodada 3) |
+| voz-da-marca | Axon, Sinapse | **Só no repositório.** Cartão vai junto com o do ciclos |
 | ciclos-dos-agentes | Todos | **Só no repositório.** Cartão a reenviar (limite de propostas atingido) |
 
 A versão mais nova de cada uma está nas pastas deste repositório.
@@ -53,6 +54,9 @@ A versão mais nova de cada uma está nas pastas deste repositório.
 | offers | coreyhaines31/marketingskills | MIT | Montar a oferta (bônus, garantia, urgência) | Base para um agente de página de vendas |
 | claude-ads | AgriciDaniel/claude-ads | MIT | Auditoria de contas de anúncio | Usar quando houver conta rodando com dados |
 | meta-ads-strategy | adkit/ads-skills | Restritiva | | **Não usar**: proíbe incorporar |
+
+### Repositório affaan-m/ECC (avaliado em 26/10/2026)
+Kit grande (71 agentes, 311 skills, hooks) feito para programadores no Claude Code. Não vale instalar inteiro nos projetos de marketing. Aproveitado: brand-voice e content-engine (MIT), viraram a skill voz-da-marca. Úteis se um dia for programar: market-research, frontend-slides, security-review.
 
 ## 3. Ideia de agente novo
 **Página de vendas e oferta** (ex.: nome "Córtex", a parte do cérebro que decide): juntaria offers, page-cro e copywriting (todos MIT) para o infoproduto low ticket.

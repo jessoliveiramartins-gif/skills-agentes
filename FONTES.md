@@ -11,3 +11,4 @@
 | [AgriciDaniel/claude-ads](https://github.com/AgriciDaniel/claude-ads) | MIT | dendro-concorrentes | Adaptado (ads-competitor) |
 | [tvr-ux/claude-transcribe-skill](https://github.com/tvr-ux/claude-transcribe-skill) | MIT | dendro-concorrentes | Adaptado (transcrever vídeos de concorrentes) |
 | coreyhaines31/marketingskills: customer-research, marketing-loops | MIT | dendro-concorrentes, ciclos-dos-agentes | Adaptado |
+| [affaan-m/ECC](https://github.com/affaan-m/ECC) | MIT | voz-da-marca | Adaptado (brand-voice, content-engine). Kit completo é para programação; não instalado |
