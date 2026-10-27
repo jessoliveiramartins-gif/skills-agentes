@@ -1,12 +1,12 @@
 # Catálogo: skills que agregam aos 4 agentes
 
-Atualizado em 26/10/2026. Pesquisa do Dendro no GitHub público. Só entram skills grátis, com licença aberta e sem scripts suspeitos.
+Atualizado em 27/10/2026. Pesquisa do Dendro no GitHub público. Só entram skills grátis, com licença aberta e sem scripts suspeitos.
 
 ## 1. O que já está salvo na conta do Marco
 
 | Skill | Agente | Situação |
 |---|---|---|
-| dendro-buscador | Dendro | Salva (versão antiga). Versão nova com método profundo e checagem de fatos aguarda o cartão |
+| dendro-buscador | Dendro | Salva (versão nova, 27/10: método profundo, checagem de fatos e ponte para a dendro-olhos) |
 | axon-editor-de-video | Axon | Salva (versão antiga). Versão nova com copy anti-IA e criativo de anúncio aguarda o cartão |
 | axon-desempenho | Axon | Salva |
 | modo-economia | Todos | Salva |
@@ -15,6 +15,8 @@ Atualizado em 26/10/2026. Pesquisa do Dendro no GitHub público. Só entram skil
 | axon-cortes | Axon | **Só proposta.** Salvar pelo cartão |
 | dendro-concorrentes | Dendro | Salva |
 | voz-da-marca | Axon, Sinapse | Salva |
+| dendro-olhos | Dendro (e todos que recebem vídeo) | Salva (27/10) |
+| empresa-dos-agentes | Todos | Salva (27/10). Coordena a equipe em toda conversa |
 | ciclos-dos-agentes | Todos | Recusada pelo Marco (fica só no repositório, como referência) |
 
 A versão mais nova de cada uma está nas pastas deste repositório.
@@ -28,6 +30,7 @@ A versão mais nova de cada uma está nas pastas deste repositório.
 | customer-research | coreyhaines31/marketingskills | MIT | Garimpar a voz do cliente em comentários, avaliações e fóruns | Adaptado no dendro-concorrentes |
 | ads-competitor | AgriciDaniel/claude-ads | MIT | Espionar anúncios na Biblioteca da Meta e do Google sem copiar | Adaptado no dendro-concorrentes |
 | transcribe | tvr-ux/claude-transcribe-skill | MIT | Transcrever Reels, TikTok e YouTube de concorrentes (yt-dlp + whisper) | Adaptado no dendro-concorrentes, com faster-whisper |
+| watch (/watch) | bradautomates/claude-video | MIT | Assistir vídeo por link: quadros com horário + transcrição (19 mil estrelas) | Só roda no Claude Code. Adaptado para o Claude.ai na dendro-olhos; instalar direto no Claude Code |
 | yt-transcript | moretothat/yt-transcript | MIT | Transcrição limpa + resumo de vídeo do YouTube | Alternativa, não precisa salvar |
 
 ### Axon (vídeo e copy)
@@ -62,6 +65,7 @@ Kit grande (71 agentes, 311 skills, hooks) feito para programadores no Claude Co
 **Página de vendas e oferta** (ex.: nome "Córtex", a parte do cérebro que decide): juntaria offers, page-cro e copywriting (todos MIT) para o infoproduto low ticket.
 
 ## 4. Como salvar e aplicar
+0. **Atualizar sem perder (regra do Marco, 27/10):** toda versão nova parte da versão salva na conta e da deste repositório. Compare as duas, mantenha tudo que ainda serve e só então salve. Salvar pelo cartão substitui a skill inteira.
 1. Clique em **Salvar** nos cartões de proposta da conversa. Só assim a skill passa a funcionar em todos os projetos.
 2. Este repositório guarda a cópia oficial de cada skill. Quando uma skill mudar, atualize a pasta aqui.
 3. As skills de fora com licença MIT foram traduzidas e adaptadas, com crédito no fim de cada arquivo. Não copiamos nenhuma inteira.

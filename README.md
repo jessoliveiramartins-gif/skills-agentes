@@ -4,11 +4,12 @@ As skills e os prompts dos agentes do Marco. Os nomes vêm do neurônio: o dendr
 
 | Pasta | Agente | O que faz |
 |---|---|---|
-| `dendro/` | Dendro | Pesquisa web, verificação de fatos, busca de skills; `dendro-concorrentes` para concorrentes e voz do cliente |
+| `dendro/` | Dendro | Pesquisa web, verificação de fatos, busca de skills; `dendro-concorrentes` para concorrentes e voz do cliente; `dendro-olhos` para assistir e modelar vídeos |
 | `axon/` | Axon | Vídeo, motion, cortes e copy (`axon-editor-de-video`, `axon-desempenho`, `axon-cortes`) |
 | `sinapse/` | Sinapse | Social media: estratégia, calendário, Metricool, métricas |
 | `mielina/` | Mielina | Tráfego pago: Meta, TikTok e Google Ads |
 | `voz-da-marca/` | Axon, Sinapse | Perfil de voz de cada marca |
+| `empresa-dos-agentes/` | Todos | Os 4 agentes trabalhando juntos como uma empresa em qualquer conversa de qualquer projeto |
 | `ciclos-dos-agentes/` | Todos | Rotinas semanais que ligam os 4 agentes |
 | `modo-economia/` | Todos | Gastar menos créditos sem perder qualidade |
 
