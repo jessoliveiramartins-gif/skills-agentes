@@ -12,3 +12,4 @@
 | [tvr-ux/claude-transcribe-skill](https://github.com/tvr-ux/claude-transcribe-skill) | MIT | dendro-concorrentes | Adaptado (transcrever vídeos de concorrentes) |
 | coreyhaines31/marketingskills: customer-research, marketing-loops | MIT | dendro-concorrentes, ciclos-dos-agentes | Adaptado |
 | [affaan-m/ECC](https://github.com/affaan-m/ECC) | MIT | voz-da-marca | Adaptado (brand-voice, content-engine). Kit completo é para programação; não instalado |
+| [bradautomates/claude-video](https://github.com/bradautomates/claude-video) (/watch) | MIT | dendro-olhos | Avaliado em 27/10/2026. Scripts limpos (só Python padrão, sem shell, chaves nunca logadas). Não funciona no Claude.ai: adaptado na dendro-olhos. No Claude Code, instalar direto pelo marketplace |

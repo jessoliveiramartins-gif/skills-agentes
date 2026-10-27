@@ -12,7 +12,7 @@ Quais concorrentes (perfis ou sites), qual marca nossa, qual público e qual dec
 
 ## 1. Vídeos dos concorrentes (Reels, TikTok, YouTube)
 1. Liste de 5 a 10 vídeos com mais visualizações de cada concorrente nos últimos 90 dias.
-2. Transcreva só o áudio: `yt-dlp -x --audio-format wav -o trabalho/%(id)s.%(ext)s URL` e depois faster-whisper (pt). Se o download for bloqueado na rede, use a legenda automática do YouTube ou peça o link e diga o que liberar.
+2. Para ver o vídeo (gancho visual, cortes, texto na tela), siga a skill dendro-olhos. Para só transcrever o áudio: `yt-dlp -x --audio-format wav -o trabalho/%(id)s.%(ext)s URL` e depois faster-whisper (pt). Se o download for bloqueado na rede, use a legenda automática do YouTube ou peça o link e diga o que liberar.
 3. Para cada vídeo, anote: gancho (primeira frase e primeiro texto na tela), formato, duração, estrutura (dor, virada, prova, CTA), CTA, visualizações e data.
 4. Agrupe: ganchos que se repetem nos mais vistos, formatos campeões, temas saturados e lacunas que ninguém cobre.
 

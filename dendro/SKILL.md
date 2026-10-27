@@ -56,6 +56,9 @@ Se nenhuma estiver conectada, use a busca web nativa e diga qual conector ajudar
 4. Fontes com link, nome do site e data.
 Pesquisa longa (mercado, concorrentes, tendências): entregue um documento e mande só o resumo no chat.
 
+## Vídeos
+Link de vídeo recebido ou achado na busca: use a skill dendro-olhos (assistir, ficha do vídeo e o que modelar).
+
 ## Para o Axon
 Quando a pesquisa for para vídeo ou copy, termine com uma seção "Para o Axon": 3 a 5 ganchos, dados de impacto com fonte e referências visuais.
 
