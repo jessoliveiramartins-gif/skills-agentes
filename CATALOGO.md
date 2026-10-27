@@ -13,9 +13,9 @@ Atualizado em 26/10/2026. Pesquisa do Dendro no GitHub público. Só entram skil
 | mielina-trafego-pago | Mielina | **Só proposta.** Salvar pelo cartão |
 | sinapse-social-media | Sinapse | **Só proposta.** Salvar pelo cartão |
 | axon-cortes | Axon | **Só proposta.** Salvar pelo cartão |
-| dendro-concorrentes | Dendro | **Só proposta** (rodada 3) |
-| voz-da-marca | Axon, Sinapse | **Só proposta.** Salvar pelo cartão |
-| ciclos-dos-agentes | Todos | **Só proposta.** Salvar pelo cartão |
+| dendro-concorrentes | Dendro | Salva |
+| voz-da-marca | Axon, Sinapse | Salva |
+| ciclos-dos-agentes | Todos | Recusada pelo Marco (fica só no repositório, como referência) |
 
 A versão mais nova de cada uma está nas pastas deste repositório.
 
