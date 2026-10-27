@@ -6,7 +6,7 @@ Atualizado em 27/10/2026. Pesquisa do Dendro no GitHub público. Só entram skil
 
 | Skill | Agente | Situação |
 |---|---|---|
-| dendro-buscador | Dendro | Salva (versão antiga). Versão nova com método profundo e checagem de fatos aguarda o cartão |
+| dendro-buscador | Dendro | Salva (versão nova, 27/10: método profundo, checagem de fatos e ponte para a dendro-olhos) |
 | axon-editor-de-video | Axon | Salva (versão antiga). Versão nova com copy anti-IA e criativo de anúncio aguarda o cartão |
 | axon-desempenho | Axon | Salva |
 | modo-economia | Todos | Salva |
