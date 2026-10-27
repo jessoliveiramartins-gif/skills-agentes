@@ -16,7 +16,7 @@ Atualizado em 27/10/2026. Pesquisa do Dendro no GitHub público. Só entram skil
 | dendro-concorrentes | Dendro | Salva |
 | voz-da-marca | Axon, Sinapse | Salva |
 | dendro-olhos | Dendro (e todos que recebem vídeo) | Salva (27/10) |
-| empresa-dos-agentes | Todos | **Só proposta (27/10).** Salvar pelo cartão. Coordena a equipe em toda conversa |
+| empresa-dos-agentes | Todos | Salva (27/10). Coordena a equipe em toda conversa |
 | ciclos-dos-agentes | Todos | Recusada pelo Marco (fica só no repositório, como referência) |
 
 A versão mais nova de cada uma está nas pastas deste repositório.
