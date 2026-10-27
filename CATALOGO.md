@@ -64,6 +64,7 @@ Kit grande (71 agentes, 311 skills, hooks) feito para programadores no Claude Co
 **Página de vendas e oferta** (ex.: nome "Córtex", a parte do cérebro que decide): juntaria offers, page-cro e copywriting (todos MIT) para o infoproduto low ticket.
 
 ## 4. Como salvar e aplicar
+0. **Atualizar sem perder (regra do Marco, 27/10):** toda versão nova parte da versão salva na conta e da deste repositório. Compare as duas, mantenha tudo que ainda serve e só então salve. Salvar pelo cartão substitui a skill inteira.
 1. Clique em **Salvar** nos cartões de proposta da conversa. Só assim a skill passa a funcionar em todos os projetos.
 2. Este repositório guarda a cópia oficial de cada skill. Quando uma skill mudar, atualize a pasta aqui.
 3. As skills de fora com licença MIT foram traduzidas e adaptadas, com crédito no fim de cada arquivo. Não copiamos nenhuma inteira.

@@ -1,6 +1,6 @@
 ---
-name: dendro-concorrentes
-description: Complemento do Dendro para espionar concorrentes e ouvir o cliente: transcrever Reels e TikToks, analisar anúncios na Biblioteca da Meta e garimpar comentários. Use quando pedirem análise de concorrente, ganchos que funcionam ou dores do público.
+name: "dendro-concorrentes"
+description: "Complemento do Dendro para espionar concorrentes e ouvir o cliente: transcrever Reels e TikToks, analisar anúncios na Biblioteca da Meta, modelar formatos virais por frames e garimpar comentários. Use quando pedirem análise de concorrente, ganchos, formatos virais ou dores do público."
 ---
 
 # Dendro Concorrentes: concorrentes e voz do cliente
@@ -30,6 +30,15 @@ Garimpe comentários dos vídeos, avaliações (Google, Reclame Aqui, lojas de a
 - objeções na hora de comprar ("é caro", "não tenho tempo", "não sei mexer");
 - resultado que desejam, como eles descrevem.
 Ordene os temas por frequência e intensidade. Cite as frases reais, sem nomes de pessoas.
+
+## 4. Modelar formatos virais de vídeo (Dendro + Axon)
+Use quando pedirem formatos que estão viralizando para adaptar aos nossos vídeos (achadinhos, TikTok Shop).
+1. **Achar os campeões (Dendro):** raspe a Biblioteca de Anúncios da Meta com firecrawl_scrape (waitFor 5000) usando a URL `https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=BR&media_type=video&search_type=keyword_unordered&q=<termo>` (termos: achadinhos, acheinashopee, casa, cozinha, organização, presente). A página já vem ordenada por impressões. Complete com o TikTok Creative Center (Top Ads, Brasil). Anote anunciante, texto, CTA, link, data de início e número de versões. Ativo há mais de 30 dias ou com várias versões = sinal forte.
+2. **Pegar o vídeo:** a raspagem lê o texto, mas não baixa o vídeo da Meta. Peça para ela salvar de 3 a 5 vídeos campeões numa pasta (ou use a conversa local com o Claude in Chrome). Links públicos de TikTok ou Reels: tente `yt-dlp`.
+3. **Olho (grátis):** `pip install scenedetect` e rode `scenedetect -i video.mp4 detect-adaptive list-scenes save-images -n 1` (1 frame por cena). Se precisar de mais detalhe, use `ffmpeg -i video.mp4 -vf fps=2 frames/%03d.jpg`. Olhe os frames com visão e transcreva o áudio com faster-whisper. A ficha e o nível de evidência seguem a skill dendro-olhos.
+4. **Ficha do formato:** número de cenas e duração de cada uma (o ritmo), gancho visual e texto dos primeiros 2 s, tipo de plano (mão segurando, antes e depois, POV, unboxing, teste), posição e estilo do texto, prova social, CTA e trilha. Ignore a marca e o rosto do criador: copie só a estrutura.
+5. **Entregar para o Axon:** de 1 a 3 formatos em formato de roteiro por cena (tempo, plano, texto na tela, som), adaptados às regras do projeto (CTA "Clique no carrinho laranja" no TikTok Shop, sem voz de IA, comentários reais, sem R$ ou % na tela). O Axon renderiza 1 modelo para aprovação antes de fazer em lote.
+6. Salve cada formato aprovado numa biblioteca de formatos do projeto (`/mnt/project-files/formatos/AAAA-MM-DD_nome.md`) para reaproveitar.
 
 ## Entrega
 1. Resumo em 3 frases: o que os concorrentes fazem, onde está a brecha, o que testar.
