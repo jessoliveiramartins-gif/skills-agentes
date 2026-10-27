@@ -1,11 +1,12 @@
 # Arquitetura dos agentes no Claude Code
 
-Versão 1.0 · rascunho para aprovação do Marco · 27/10/2026
-Autor: Visão Geral (coordenador). Nada deste documento foi aplicado ainda.
+Versão 1.1 · aprovada pelo Marco em 27/10/2026 · fases 1 a 4 aplicadas no repositório
+Autor: Visão Geral (coordenador).
 
-> **Situação real hoje (o que foi e o que não foi feito)**
-> - Feito: leitura das skills atuais (conta e repositório), conferência de licença e manutenção dos MCPs e skills citados (busca web em 27/10/2026, links na seção 3.7) e escrita deste documento.
-> - **Não feito:** nenhuma skill foi alterada ou instalada, nenhum MCP foi configurado, nenhuma conta foi criada, nenhum teste foi rodado. Tudo isso depende das decisões da seção 14.
+> **Situação real hoje (27/10/2026, o que foi e o que não foi feito)**
+> - Feito: leitura das skills atuais, conferência de licença dos MCPs e skills (links na seção 3.4), este documento, e as fases 1 a 4 da seção 12 no repositório: subagentes (`.claude/agents/`), permissões (`.claude/settings.json`), hook de allowlist testado com chamadas simuladas (`.claude/hooks/checa-allowlist.py`), allowlist (`config/allowlist.json`), schemas (`schemas/`), `.env.example`, `.gitignore` e pasta `equipe/`. Skills empresa-dos-agentes, visao-geral-coordenador e mielina-trafego-pago atualizadas no repositório e enviadas como cartão para salvar na conta.
+> - **Não feito:** nenhuma skill ou MCP foi instalado na máquina do Marco, nenhuma conta foi criada, nenhuma ferramenta de escrita externa foi liberada, os testes da seção 10 não foram rodados com contas reais.
+> - **Decisão do Marco sobre a allowlist (27/10):** por enquanto, a allowlist de publicação são as marcas ligadas no Metricool. Em 27/10 havia uma só: TikTok `larcomproposito.oficial` (blogId 7654926). As contas do Meu Primeiro App e da MWX ainda não estão no Metricool; até serem ligadas, publicar nelas pelos agentes fica bloqueado.
 > - Regra do Marco aplicada (27/10): **o que depende de plataforma paga saiu da arquitetura** e foi para a seção 4.3 ("Para o futuro").
 
 ---
@@ -843,6 +844,8 @@ Cada fase separa o tipo de mudança, como pedido na seção 8 do pedido. Nada co
 
 ## 14. Decisões do Marco antes de aplicar
 
+**Situação (27/10/2026):** o Marco aprovou todas as recomendações abaixo, com uma troca: em D11, a allowlist por enquanto são as marcas ligadas no Metricool.
+
 | # | Decisão | Recomendação |
 |---|---|---|
 | D1 | Nome do agente de sites: **Córtex** (já salvo) ou **Córdex**? | Manter Córtex e aceitar Córdex como apelido. Renomear exigiria nova skill e apagar a antiga |
@@ -855,10 +858,10 @@ Cada fase separa o tipo de mudança, como pedido na seção 8 do pedido. Nada co
 | D8 | Qual `ffmpeg-skill`: `kajisho5` (mais completo, MCP) ou `n0an` (receitas simples)? | `kajisho5`, depois de ler os scripts; ou nenhum, já que o Kinocut cobre o mesmo |
 | D9 | A equipe tem até 3 pessoas (Remotion grátis)? | Confirmar; se sim, segue o Remotion |
 | D10 | Liberar escrita no Meta Ads MCP (criar campanha pausada) ou ficar só leitura por enquanto? | Só leitura até rodar o primeiro ciclo de testes |
-| D11 | IDs para a allowlist (contas de redes, contas de anúncio, domínios, teto mensal por marca) | Marco envia; sem isso, toda escrita externa fica bloqueada |
+| D11 | IDs para a allowlist (contas de redes, contas de anúncio, domínios, teto mensal por marca) | **Decidido:** redes = marcas ligadas no Metricool. Contas de anúncio, domínios e teto ficam vazios (bloqueado) até o Marco informar |
 | D12 | Publicar pelo TikTok via API (exige criar app e passar na auditoria) ou seguir pelo Metricool/manual? | Seguir pelo Metricool por enquanto |
 | D13 | Ordem: começar pelas fases 1 a 4 (só instruções e arquivos, tudo reversível)? | Sim |
 
 ---
 
-*Este documento parte das skills atuais (conta e repositório skills-agentes, 27/10/2026) e não remove nenhuma regra delas: as instruções novas se somam às antigas. Itens pagos estão na seção 4.3 por pedido do Marco.*
+*Atualizado em 27/10/2026 com as decisões do Marco. Este documento parte das skills atuais (conta e repositório skills-agentes, 27/10/2026) e não remove nenhuma regra delas: as instruções novas se somam às antigas. Itens pagos estão na seção 4.3 por pedido do Marco.*

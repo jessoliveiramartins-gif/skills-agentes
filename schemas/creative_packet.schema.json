@@ -1,0 +1,178 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "creative_packet (Axon)",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "conceito": {
+      "type": "string"
+    },
+    "objetivo": {
+      "type": "string"
+    },
+    "angulo": {
+      "type": "string"
+    },
+    "brief_aprovado_ref": {
+      "type": "string"
+    },
+    "hooks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "roteiro": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "t": {
+            "type": "string"
+          },
+          "fala": {
+            "type": "string"
+          },
+          "tela": {
+            "type": "string"
+          },
+          "claim_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "claims_alteradas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "arquivo": {
+            "type": "string"
+          },
+          "origem": {
+            "type": "string"
+          },
+          "licenca": {
+            "type": "string"
+          },
+          "prova": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "arquivo",
+          "origem",
+          "licenca"
+        ]
+      }
+    },
+    "timeline_edl": {
+      "type": "string"
+    },
+    "formatos": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "9:16",
+          "16:9",
+          "1:1"
+        ]
+      }
+    },
+    "renders": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "arquivo": {
+            "type": "string"
+          },
+          "duracao_s": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "lufs": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "receipt": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "arquivo"
+        ]
+      }
+    },
+    "legendas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "thumbnails": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "copy": {
+      "type": "object",
+      "properties": {
+        "titulo": {
+          "type": "string"
+        },
+        "descricao": {
+          "type": "string"
+        },
+        "capitulos": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "hashtags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cta": {
+          "type": "string"
+        }
+      }
+    },
+    "qa_audiovisual": {
+      "type": "object"
+    },
+    "versoes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "conceito",
+    "objetivo",
+    "roteiro",
+    "assets",
+    "formatos",
+    "versoes"
+  ]
+}

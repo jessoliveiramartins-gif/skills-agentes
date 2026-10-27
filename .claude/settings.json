@@ -1,0 +1,49 @@
+{
+  "permissions": {
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/credentials*.json)",
+      "Read(**/service-account*.json)",
+      "Read(**/cookies*)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.config/gcloud/**)",
+      "Bash(rm -rf:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(sudo:*)",
+      "Bash(chmod 777:*)",
+      "Bash(printenv:*)",
+      "Bash(env)",
+      "Bash(cat .env*)",
+      "mcp__TinyFish__top_up_wallet"
+    ],
+    "ask": [
+      "mcp__Metricool_Social_Media_Management__createScheduledPost",
+      "mcp__Metricool_Social_Media_Management__updateScheduledPost",
+      "mcp__Base44__create_base44_app",
+      "mcp__Base44__edit_base44_app",
+      "mcp__github__merge_pull_request"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__Metricool.*|mcp__.*([Mm]eta|[Ff]acebook|[Gg]oogle.?[Aa]ds|[Tt]ik[Tt]ok).*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/.claude/hooks/checa-allowlist.py\""
+          }
+        ]
+      }
+    ]
+  }
+}

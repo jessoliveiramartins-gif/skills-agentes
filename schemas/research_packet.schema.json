@@ -1,0 +1,149 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "research_packet (Dendro)",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "pergunta": {
+      "type": "string"
+    },
+    "decisao_apoiada": {
+      "type": "string"
+    },
+    "profundidade": {
+      "type": "string",
+      "enum": [
+        "rapida",
+        "media",
+        "profunda"
+      ]
+    },
+    "resumo": {
+      "type": "string"
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claim_id": {
+            "type": "string"
+          },
+          "afirmacao": {
+            "type": "string"
+          },
+          "fontes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "titulo": {
+                  "type": "string"
+                },
+                "data_fonte": {
+                  "type": "string"
+                },
+                "acesso": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "trecho": {
+                  "type": "string"
+                },
+                "tipo": {
+                  "type": "string",
+                  "enum": [
+                    "oficial",
+                    "estudo",
+                    "mercado",
+                    "usuario"
+                  ]
+                }
+              },
+              "required": [
+                "url",
+                "titulo",
+                "acesso",
+                "trecho"
+              ]
+            },
+            "minItems": 1
+          },
+          "confianca": {
+            "type": "string",
+            "enum": [
+              "alta",
+              "media",
+              "baixa"
+            ]
+          },
+          "limitacao": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "claim_id",
+          "afirmacao",
+          "fontes",
+          "confianca",
+          "limitacao"
+        ]
+      }
+    },
+    "contradicoes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lacunas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "o_que_vigiar": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "recomendacao": {
+      "type": "string"
+    },
+    "para_o_axon": {
+      "type": "object",
+      "properties": {
+        "hooks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dados_de_impacto": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "referencias_visuais": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "pergunta",
+    "resumo",
+    "claims",
+    "contradicoes",
+    "lacunas",
+    "recomendacao"
+  ]
+}

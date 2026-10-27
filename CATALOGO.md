@@ -1,6 +1,6 @@
 # Catálogo: skills que agregam aos 4 agentes
 
-Atualizado em 26/10/2026. Pesquisa do Dendro no GitHub público. Só entram skills grátis, com licença aberta e sem scripts suspeitos.
+Atualizado em 27/10/2026. Pesquisa do Dendro no GitHub público. Só entram skills grátis, com licença aberta e sem scripts suspeitos.
 
 ## 1. O que já está salvo na conta do Marco
 
@@ -10,12 +10,16 @@ Atualizado em 26/10/2026. Pesquisa do Dendro no GitHub público. Só entram skil
 | axon-editor-de-video | Axon | Salva (versão antiga). Versão nova com copy anti-IA e criativo de anúncio aguarda o cartão |
 | axon-desempenho | Axon | Salva |
 | modo-economia | Todos | Salva |
-| mielina-trafego-pago | Mielina | **Só proposta.** Salvar pelo cartão |
+| mielina-trafego-pago | Mielina | **Só proposta.** Cartão reenviado em 27/10 já com as regras da arquitetura |
 | sinapse-social-media | Sinapse | **Só proposta.** Salvar pelo cartão |
 | axon-cortes | Axon | **Só proposta.** Salvar pelo cartão |
 | dendro-concorrentes | Dendro | Salva |
 | voz-da-marca | Axon, Sinapse | Salva |
 | ciclos-dos-agentes | Todos | Recusada pelo Marco (fica só no repositório, como referência) |
+| dendro-olhos | Dendro | Salva (27/10) |
+| cortex-criador-de-sites | Córtex | Salva |
+| empresa-dos-agentes | Todos | Salva. Versão com envelope, portões e allowlist (arquitetura 27/10) aguarda o cartão |
+| visao-geral-coordenador | Visão Geral | **Nova (27/10).** Coordenação e QA; aguarda o cartão |
 
 A versão mais nova de cada uma está nas pastas deste repositório.
 

@@ -1,0 +1,187 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "traffic_packet (Mielina)",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "periodo": {
+      "type": "string"
+    },
+    "fonte_dados": {
+      "type": "string"
+    },
+    "metricas": {
+      "type": "object",
+      "properties": {
+        "gasto_brl_com_impostos": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "cpm": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "ctr": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "cpl": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "cpa": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "cac": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "roas": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "taxa_conversao": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "diagnostico": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "hipoteses": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "alteracoes_propostas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "objeto": {
+            "type": "string",
+            "enum": [
+              "campanha",
+              "conjunto",
+              "anuncio"
+            ]
+          },
+          "id": {
+            "type": "string"
+          },
+          "estado_atual": {
+            "type": "string"
+          },
+          "mudanca": {
+            "type": "string"
+          },
+          "efeito_esperado": {
+            "type": "string"
+          },
+          "como_desfazer": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "objeto",
+          "estado_atual",
+          "mudanca",
+          "como_desfazer"
+        ]
+      }
+    },
+    "orcamento_afetado": {
+      "type": "object",
+      "properties": {
+        "diario_brl": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "maximo_total_brl_com_impostos": {
+          "type": [
+            "number",
+            "null"
+          ]
+        }
+      }
+    },
+    "riscos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft_only",
+        "approved"
+      ]
+    },
+    "aprovado_por": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "aprovado_em": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "periodo",
+    "fonte_dados",
+    "metricas",
+    "diagnostico",
+    "alteracoes_propostas",
+    "orcamento_afetado",
+    "riscos",
+    "status"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "approved"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "aprovado_por": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ]
+}

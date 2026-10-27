@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "social_packet (Sinapse)",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "canal": {
+      "type": "string",
+      "enum": [
+        "instagram",
+        "tiktok",
+        "youtube",
+        "youtube_shorts",
+        "facebook",
+        "threads"
+      ]
+    },
+    "conta": {
+      "type": "string"
+    },
+    "metricool_blog_id": {
+      "type": "string"
+    },
+    "peca": {
+      "type": "string"
+    },
+    "texto": {
+      "type": "string"
+    },
+    "midia": {
+      "type": "string"
+    },
+    "data_sugerida": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "rascunho",
+        "para_revisao",
+        "aprovado",
+        "publicado"
+      ]
+    },
+    "destino": {
+      "type": "string",
+      "enum": [
+        "metricool_rascunho",
+        "metricool_revisao",
+        "api_rascunho",
+        "manual"
+      ]
+    },
+    "fonte": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "cta": {
+      "type": "string"
+    },
+    "hashtags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "palavra_chave": {
+      "type": "string"
+    },
+    "riscos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "aprovacao_necessaria": {
+      "type": "boolean",
+      "const": true
+    }
+  },
+  "required": [
+    "canal",
+    "conta",
+    "peca",
+    "texto",
+    "data_sugerida",
+    "status",
+    "destino",
+    "riscos",
+    "aprovacao_necessaria"
+  ]
+}
