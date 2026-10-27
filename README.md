@@ -9,6 +9,7 @@ As skills e os prompts dos agentes do Marco. Os nomes vêm do neurônio: o dendr
 | `sinapse/` | Sinapse | Social media: estratégia, calendário, Metricool, métricas |
 | `mielina/` | Mielina | Tráfego pago: Meta, TikTok e Google Ads |
 | `voz-da-marca/` | Axon, Sinapse | Perfil de voz de cada marca |
+| `empresa-dos-agentes/` | Todos | Os 4 agentes trabalhando juntos como uma empresa em qualquer conversa de qualquer projeto |
 | `ciclos-dos-agentes/` | Todos | Rotinas semanais que ligam os 4 agentes |
 | `modo-economia/` | Todos | Gastar menos créditos sem perder qualidade |
 
