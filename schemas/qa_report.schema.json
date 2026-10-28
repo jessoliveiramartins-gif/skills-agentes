@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "qa_report (Visão Geral / qa-revisor)",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "alvo": {
+      "type": "string",
+      "enum": [
+        "creative_packet",
+        "social_packet",
+        "traffic_packet",
+        "platform_packet",
+        "research_packet"
+      ]
+    },
+    "ref": {
+      "type": "string"
+    },
+    "versao": {
+      "type": "string"
+    },
+    "checklist": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "string"
+          },
+          "resultado": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "falhou",
+              "n/a"
+            ]
+          },
+          "nota": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "item",
+          "resultado"
+        ]
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "needs_changes",
+        "blocked"
+      ]
+    },
+    "devolver_para": {
+      "type": "string"
+    },
+    "pendencias": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "alvo",
+    "ref",
+    "versao",
+    "checklist",
+    "status"
+  ]
+}

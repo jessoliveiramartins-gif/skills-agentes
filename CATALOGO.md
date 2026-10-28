@@ -1,21 +1,25 @@
 # Catálogo: skills que agregam aos 4 agentes
 
-Atualizado em 26/10/2026. Pesquisa do Dendro no GitHub público. Só entram skills grátis, com licença aberta e sem scripts suspeitos.
+Atualizado em 27/10/2026. Pesquisa do Dendro no GitHub público. Só entram skills grátis, com licença aberta e sem scripts suspeitos.
 
 ## 1. O que já está salvo na conta do Marco
 
 | Skill | Agente | Situação |
 |---|---|---|
-| dendro-buscador | Dendro | Salva (versão antiga). Versão nova com método profundo e checagem de fatos aguarda o cartão |
-| axon-editor-de-video | Axon | Salva (versão antiga). Versão nova com copy anti-IA e criativo de anúncio aguarda o cartão |
+| dendro-buscador | Dendro | Salva. Versão com a arquitetura (research_packet, limites) cartão reenviado em 28/10, aguarda salvar |
+| axon-editor-de-video | Axon | Salva (28/10) com anti-IA, criativo de anúncio e linha de produção |
 | axon-desempenho | Axon | Salva |
 | modo-economia | Todos | Salva |
-| mielina-trafego-pago | Mielina | **Só proposta.** Salvar pelo cartão |
-| sinapse-social-media | Sinapse | **Só proposta.** Salvar pelo cartão |
-| axon-cortes | Axon | **Só proposta.** Salvar pelo cartão |
-| dendro-concorrentes | Dendro | Salva |
+| mielina-trafego-pago | Mielina | Salva (28/10) com a arquitetura |
+| sinapse-social-media | Sinapse | **Só proposta.** Cartão reenviado em 28/10 com as regras da arquitetura |
+| axon-cortes | Axon | **Só proposta.** Cartão reenviado em 28/10 com as regras da arquitetura |
+| dendro-concorrentes | Dendro | Salva. Versão com a arquitetura cartão reenviado em 28/10, aguarda salvar |
 | voz-da-marca | Axon, Sinapse | Salva |
 | ciclos-dos-agentes | Todos | Recusada pelo Marco (fica só no repositório, como referência) |
+| dendro-olhos | Dendro | Salva (27/10) |
+| cortex-criador-de-sites | Córtex | Salva. Versão com a arquitetura (landing, dashboards, SEO técnico, platform_packet) cartão reenviado em 28/10, aguarda salvar |
+| empresa-dos-agentes | Todos | Salva com a arquitetura (28/10) |
+| visao-geral-coordenador | Visão Geral | Salva (28/10). Coordenação e QA |
 
 A versão mais nova de cada uma está nas pastas deste repositório.
 

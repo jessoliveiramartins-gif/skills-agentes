@@ -1,0 +1,135 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "platform_packet (Córtex)",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "objetivo": {
+      "type": "string"
+    },
+    "publico": {
+      "type": "string"
+    },
+    "paginas": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "componentes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "eventos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "nome": {
+            "type": "string"
+          },
+          "gatilho": {
+            "type": "string"
+          },
+          "destino": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "nome",
+          "gatilho"
+        ]
+      }
+    },
+    "integracoes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "arquivos_alterados": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "testes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "teste": {
+            "type": "string"
+          },
+          "resultado": {
+            "type": "string",
+            "enum": [
+              "passou",
+              "falhou",
+              "nao_rodado"
+            ]
+          },
+          "evidencia": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "teste",
+          "resultado"
+        ]
+      }
+    },
+    "lighthouse": {
+      "type": "object"
+    },
+    "riscos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "deploy": {
+      "type": "object",
+      "properties": {
+        "ambiente": {
+          "type": "string",
+          "enum": [
+            "previa",
+            "producao"
+          ]
+        },
+        "passos": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rollback": {
+          "type": "string"
+        },
+        "precisa_aprovacao": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "ambiente",
+        "rollback",
+        "precisa_aprovacao"
+      ]
+    }
+  },
+  "required": [
+    "objetivo",
+    "paginas",
+    "eventos",
+    "arquivos_alterados",
+    "testes",
+    "riscos",
+    "deploy"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "versao": "1.0",
+  "atualizado_em": "2026-10-27",
+  "regra": "Por decisão do Marco (27/10/2026), a allowlist de publicação são as marcas ligadas no Metricool. Marca nova: ligar no Metricool e acrescentar o blogId aqui. Contas de anúncio, domínios e teto de verba ficam vazios até o Marco informar; vazio = bloqueado.",
+  "metricool_blog_ids": {
+    "7654926": {
+      "marca": "lar-com-proposito",
+      "redes": {"tiktok": "larcomproposito.oficial"},
+      "fuso": "America/Sao_Paulo"
+    }
+  },
+  "meta_ad_accounts": [],
+  "google_ads_customers": [],
+  "tiktok_advertisers": [],
+  "dominios": [],
+  "teto_mensal_brl": {}
+}

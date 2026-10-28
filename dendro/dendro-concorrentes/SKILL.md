@@ -1,6 +1,6 @@
 ---
 name: dendro-concorrentes
-description: Complemento do Dendro para espionar concorrentes e ouvir o cliente: transcrever Reels e TikToks, analisar anúncios na Biblioteca da Meta e garimpar comentários. Use quando pedirem análise de concorrente, ganchos que funcionam ou dores do público.
+description: Complemento do Dendro para espionar concorrentes e ouvir o cliente: transcrever Reels e TikToks, analisar anúncios na Biblioteca da Meta, modelar formatos virais por frames e garimpar comentários. Use quando pedirem análise de concorrente, ganchos, formatos virais ou dores do público.
 ---
 
 # Dendro Concorrentes: concorrentes e voz do cliente
@@ -12,7 +12,7 @@ Quais concorrentes (perfis ou sites), qual marca nossa, qual público e qual dec
 
 ## 1. Vídeos dos concorrentes (Reels, TikTok, YouTube)
 1. Liste de 5 a 10 vídeos com mais visualizações de cada concorrente nos últimos 90 dias.
-2. Transcreva só o áudio: `yt-dlp -x --audio-format wav -o trabalho/%(id)s.%(ext)s URL` e depois faster-whisper (pt). Se o download for bloqueado na rede, use a legenda automática do YouTube ou peça o link e diga o que liberar.
+2. Para ver o vídeo (gancho visual, cortes, texto na tela), siga a skill dendro-olhos. Para só transcrever o áudio: `yt-dlp -x --audio-format wav -o trabalho/%(id)s.%(ext)s URL` e depois faster-whisper (pt). Se o download for bloqueado na rede, use a legenda automática do YouTube ou peça o link e diga o que liberar.
 3. Para cada vídeo, anote: gancho (primeira frase e primeiro texto na tela), formato, duração, estrutura (dor, virada, prova, CTA), CTA, visualizações e data.
 4. Agrupe: ganchos que se repetem nos mais vistos, formatos campeões, temas saturados e lacunas que ninguém cobre.
 
@@ -31,6 +31,15 @@ Garimpe comentários dos vídeos, avaliações (Google, Reclame Aqui, lojas de a
 - resultado que desejam, como eles descrevem.
 Ordene os temas por frequência e intensidade. Cite as frases reais, sem nomes de pessoas.
 
+## 4. Modelar formatos virais de vídeo (Dendro + Axon)
+Use quando pedirem formatos que estão viralizando para adaptar aos nossos vídeos (achadinhos, TikTok Shop).
+1. **Achar os campeões (Dendro):** raspe a Biblioteca de Anúncios da Meta com firecrawl_scrape (waitFor 5000) usando a URL `https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=BR&media_type=video&search_type=keyword_unordered&q=<termo>` (termos: achadinhos, acheinashopee, casa, cozinha, organização, presente). A página já vem ordenada por impressões. Complete com o TikTok Creative Center (Top Ads, Brasil). Anote anunciante, texto, CTA, link, data de início e número de versões. Ativo há mais de 30 dias ou com várias versões = sinal forte.
+2. **Pegar o vídeo:** a raspagem lê o texto, mas não baixa o vídeo da Meta. Peça ao Marco para salvar de 3 a 5 vídeos campeões numa pasta (ou use a conversa local com o Claude in Chrome). Links públicos de TikTok ou Reels: tente `yt-dlp`.
+3. **Olho (grátis):** `pip install scenedetect` e rode `scenedetect -i video.mp4 detect-adaptive list-scenes save-images -n 1` (1 frame por cena). Se precisar de mais detalhe, use `ffmpeg -i video.mp4 -vf fps=2 frames/%03d.jpg`. Olhe os frames com visão e transcreva o áudio com faster-whisper. A ficha e o nível de evidência seguem a skill dendro-olhos.
+4. **Ficha do formato:** número de cenas e duração de cada uma (o ritmo), gancho visual e texto dos primeiros 2 s, tipo de plano (mão segurando, antes e depois, POV, unboxing, teste), posição e estilo do texto, prova social, CTA e trilha. Ignore a marca e o rosto do criador: copie só a estrutura.
+5. **Entregar para o Axon:** de 1 a 3 formatos em formato de roteiro por cena (tempo, plano, texto na tela, som), adaptados às regras do projeto (CTA "Clique no carrinho laranja" no TikTok Shop, sem voz de IA, comentários reais, sem R$ ou % na tela). O Axon renderiza 1 modelo para aprovação antes de fazer em lote.
+6. Salve cada formato aprovado numa biblioteca de formatos do projeto (`/mnt/project-files/formatos/AAAA-MM-DD_nome.md`) para reaproveitar.
+
 ## Entrega
 1. Resumo em 3 frases: o que os concorrentes fazem, onde está a brecha, o que testar.
 2. Tabela de concorrentes: gancho campeão, formato, oferta, ponto fraco.
@@ -42,5 +51,11 @@ Ordene os temas por frequência e intensidade. Cite as frases reais, sem nomes d
 
 ## Limites
 Respeite os termos das plataformas, direitos autorais e privacidade. Não entre em contas privadas nem burle login. Siga o modo economia: comece com 3 concorrentes e amplie só se pedirem.
+
+## Na linha de produção (arquitetura 27/10/2026)
+- Biblioteca de Anúncios da Meta, TikTok Creative Center e Central de Transparência do Google são públicas: leia sem login. Firecrawl tem poucos créditos grátis; use só quando a leitura simples falhar.
+- yt-dlp só em vídeo público, para analisar. Nunca republique vídeo, música ou imagem de concorrente.
+- Cada achado vira uma claim com fonte, data da captura, trecho e confiança, dentro do research_packet. Separe sempre o que foi visto do que foi deduzido.
+- Comentários e avaliações: cite as frases sem nome nem perfil da pessoa.
 
 Adaptado de AgriciDaniel/claude-ads (ads-competitor), coreyhaines31/marketingskills (customer-research) e tvr-ux/claude-transcribe-skill, todos com licença MIT.

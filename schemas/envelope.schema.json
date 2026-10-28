@@ -1,0 +1,217 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Envelope de handoff",
+  "description": "Todo handoff entre agentes. Rejeitar se faltar status, risks, next_action ou evidence quando houver afirmação de pesquisa. status approved exige aprovado_por.",
+  "type": "object",
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^[0-9]{8}-[a-z0-9-]+-[0-9]{2}$"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "needs_review",
+        "approved",
+        "blocked",
+        "done"
+      ]
+    },
+    "source_agent": {
+      "type": "string",
+      "enum": [
+        "visao-geral",
+        "qa-revisor",
+        "dendro",
+        "axon",
+        "cortex",
+        "sinapse",
+        "mielina",
+        "marco"
+      ]
+    },
+    "target_agent": {
+      "type": "string",
+      "enum": [
+        "visao-geral",
+        "qa-revisor",
+        "dendro",
+        "axon",
+        "cortex",
+        "sinapse",
+        "mielina",
+        "marco"
+      ]
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "type": "string"
+          },
+          "ref": {
+            "type": "string"
+          },
+          "versao": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tipo",
+          "ref"
+        ]
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "type": "string"
+          },
+          "ref": {
+            "type": "string"
+          },
+          "dados": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "tipo"
+        ]
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "claim_id": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "titulo": {
+            "type": "string"
+          },
+          "acesso": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "claim_id",
+          "url",
+          "acesso"
+        ]
+      }
+    },
+    "permissions_used": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "risco": {
+            "type": "string"
+          },
+          "gravidade": {
+            "type": "string",
+            "enum": [
+              "baixa",
+              "media",
+              "alta"
+            ]
+          },
+          "mitigacao": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "risco",
+          "gravidade"
+        ]
+      }
+    },
+    "next_action": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+$"
+    },
+    "aprovado_por": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "aprovado_em": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "task_id",
+    "status",
+    "source_agent",
+    "target_agent",
+    "inputs",
+    "outputs",
+    "evidence",
+    "permissions_used",
+    "risks",
+    "next_action",
+    "version"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "source_agent": {
+            "const": "dendro"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "evidence": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "approved"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "aprovado_por"
+        ],
+        "properties": {
+          "aprovado_por": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  ]
+}
