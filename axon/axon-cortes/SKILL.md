@@ -41,4 +41,10 @@ Use junto com a skill axon-editor-de-video (marca, estilo de legenda e publicaç
 - Sugira à Sinapse a ordem de publicação ao longo de 1 a 2 semanas.
 - Não publique nem agende nada sem aprovação.
 
+## Na linha de produção (arquitetura 27/10/2026)
+- Cortes de conteúdo com fatos só depois do research_packet e do brief aprovado; cada afirmação do corte aponta para a fonte do Dendro.
+- Trabalhe com checkpoint: o vídeo original fica intocado em brutos/, cortes numerados, nada sobrescrito. Com o Kinocut instalado, prefira ele (gera recibo com hashes de entrada e saída).
+- Liste a origem e a licença de música, imagem e trechos de terceiros. Sem licença clara, fica de fora.
+- Entregue os cortes dentro do creative_packet do Axon e passe pelo QA do Visão Geral antes de ir para a Sinapse.
+
 Adaptado de louisedesadeleer/clipify (licença MIT).

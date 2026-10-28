@@ -7,19 +7,19 @@ Atualizado em 27/10/2026. Pesquisa do Dendro no GitHub público. Só entram skil
 | Skill | Agente | Situação |
 |---|---|---|
 | dendro-buscador | Dendro | Salva (versão antiga). Versão nova com método profundo e checagem de fatos aguarda o cartão |
-| axon-editor-de-video | Axon | Salva (versão antiga). Versão nova com copy anti-IA e criativo de anúncio aguarda o cartão |
+| axon-editor-de-video | Axon | Salva (versão antiga). Versão nova (anti-IA, criativo de anúncio, linha de produção) enviada no cartão de 28/10 |
 | axon-desempenho | Axon | Salva |
 | modo-economia | Todos | Salva |
-| mielina-trafego-pago | Mielina | **Só proposta.** Cartão reenviado em 27/10 já com as regras da arquitetura |
-| sinapse-social-media | Sinapse | **Só proposta.** Salvar pelo cartão |
-| axon-cortes | Axon | **Só proposta.** Salvar pelo cartão |
+| mielina-trafego-pago | Mielina | Salva (28/10) com a arquitetura |
+| sinapse-social-media | Sinapse | **Só proposta.** Cartão reenviado em 28/10 com as regras da arquitetura |
+| axon-cortes | Axon | **Só proposta.** Cartão reenviado em 28/10 com as regras da arquitetura |
 | dendro-concorrentes | Dendro | Salva |
 | voz-da-marca | Axon, Sinapse | Salva |
 | ciclos-dos-agentes | Todos | Recusada pelo Marco (fica só no repositório, como referência) |
 | dendro-olhos | Dendro | Salva (27/10) |
 | cortex-criador-de-sites | Córtex | Salva |
-| empresa-dos-agentes | Todos | Salva. Versão com envelope, portões e allowlist (arquitetura 27/10) aguarda o cartão |
-| visao-geral-coordenador | Visão Geral | **Nova (27/10).** Coordenação e QA; aguarda o cartão |
+| empresa-dos-agentes | Todos | Salva com a arquitetura (28/10) |
+| visao-geral-coordenador | Visão Geral | Salva (28/10). Coordenação e QA |
 
 A versão mais nova de cada uma está nas pastas deste repositório.
 

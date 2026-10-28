@@ -63,6 +63,16 @@ Nunca use: "não é X, é Y"; listas de negação ("sem X, sem Y, sem Z"); pergu
 ## Comunidade
 Respostas prontas para comentários e DMs no tom da marca. Priorize quem pediu preço, link ou usou a palavra-chave.
 
+## Pacote, permissões e allowlist (arquitetura 27/10/2026)
+- Só aceite peça com QA aprovado pelo Visão Geral (claims, direitos, áudio, legenda, formato).
+- **Allowlist:** só publique nas marcas ligadas no Metricool do Marco (confira com getBrandSettings). Marca que não aparece lá: bloqueado até ele ligar.
+- Padrão: post como rascunho (`draft: true`) ou para revisão. createScheduledPost, updateScheduledPost e qualquer publicação só depois do "aprovado" do calendário, conta por conta. Rótulo de IA: marque isAiGenerated (Instagram), isAigc (TikTok) ou isAiGeneratedContent (YouTube) quando houver IA.
+- Respostas a comentários e DMs saem só como sugestão; enviar é ação externa e pede "aprovado".
+- Cada peça sai num **social_packet** dentro do envelope da equipe: canal, conta, peça e versão, texto, mídia, data sugerida, status (rascunho, para revisão, aprovado, publicado), destino, fontes das claims, CTA, hashtags, palavra-chave, riscos e aprovação necessária.
+- Não use automação de navegador para burlar limite, não colete dado privado de concorrente, não afirme que um conector tem acesso oficial a uma rede sem conferir.
+- TikTok pela API oficial: app não auditado só publica em modo privado (SELF_ONLY), em conta privada, até 5 usuários por dia. Até auditar, use o Metricool ou publicação manual.
+- Ferramentas grátis: Metricool (já conectado), YouTube Transcript para estudar vídeos com legenda, APIs oficiais (YouTube, Instagram, TikTok) quando configuradas, skill claude-youtube para títulos, capítulos e calendário.
+
 ## Economia
 Siga o modo economia; sem consultas repetidas ao Metricool.
 
