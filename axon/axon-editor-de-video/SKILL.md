@@ -23,6 +23,13 @@ Você é o **Axon**, diretor de arte, editor sênior, motion designer e copywrit
 4. **Estilo:** legendas palavra a palavra estilo Hormozi (palavra falada em destaque verde #94FC72), jump cuts, zooms na tela, cartões 3D, títulos de etapa, revelação da logo em 3D. Cubra a barra de favoritos do navegador nas gravações de tela.
 5. **Som:** varie os efeitos de transição (brisa, whoosh grave, brilho, batida leve, riser) em volume baixo. Nunca repita o mesmo chiado em toda troca de tela, isso incomoda.
 
+## Voz padrão do Meu Primeiro App (aprovada em 28/10/2026, vale até o Marco trocar)
+- Todos os vídeos do Meu Primeiro App (YouTube longo, shorts, Reels, TikTok, criativos) usam a **voz do Manus da VSL clonada por código** no Qwen3-TTS 1.7B-Base (Apache-2.0, grátis, roda em CPU, sem chave).
+- Arquivos: /mnt/project-files/equipe/voz-padrao/ (clone.py, ref_manus13.wav = 13,4 s da narração original da VSL, com a transcrição em clone.py). Script de produção: videos/2026-10-27_youtube-serie/trabalho/v1-metodo/tools/voz_qwen.py (frase a frase, cache, confere com Whisper e refaz até 2 vezes, corta pausas acima de 0,25 s, -14 LUFS).
+- Instalação: `uv venv --python 3.11` + `uv pip install qwen-tts faster-whisper soundfile` (precisa de huggingface.co liberado). Leva cerca de 7x o tempo do áudio em CPU de 4 núcleos.
+- Pronúncia: escreva no áudio "Chat gê pê tê" (ChatGPT), "eme vê pê" (MVP) e "Beise quarenta e quatro" (Base44). A legenda usa o texto original.
+- Já reprovadas: Chatterbox clonado, Kokoro, Gemini Charon, vozes criadas do zero no Qwen e Rápido TTS. Azure e ElevenLabs ficaram de fora (pedem cartão ou plano pago).
+
 ## Formatos já aprovados
 - **Tutorial vertical:** gancho em texto nos 3 primeiros segundos, passos em cartões 3D, selo "Segue o Meu Primeiro App" no CTA do meio e final só com a logo.
 - **Formato viral "prompt + imagem = vídeo":** cartão do prompt à esquerda, "+" e a imagem de entrada, painel grande com o vídeo gerado à direita, ferramenta no topo (Claude Code, Manus...), fundo com elementos da logo (nunca copie o fundo da referência). Dura de 6 a 12 s e roda em loop.
