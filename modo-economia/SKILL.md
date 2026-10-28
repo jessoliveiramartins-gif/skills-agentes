@@ -1,6 +1,6 @@
 ---
 name: "modo-economia"
-description: "Modo economia de créditos para todos os projetos e agentes da Jessica: use em qualquer tarefa para escolher o menor modelo e esforço que mantêm a qualidade."
+description: "Modo economia de créditos para todos os projetos e agentes da Jessica (Marco): use em qualquer tarefa para escolher o menor modelo e esforço que mantêm a qualidade."
 ---
 
 # Modo economia (todos os projetos)
@@ -23,5 +23,72 @@ Objetivo: gastar menos créditos sem perder a qualidade do resultado.
 - Ao terminar uma tarefa grande, diga em uma linha qual nível usou (simples, média ou complexa) e por quê.
 - Se perceber desperdício (loop de tentativas, leituras repetidas, arquivos grandes), pare e simplifique a abordagem.
 
+## 4. Escolha automática de modelo e esforço (v2, 28/10; v3 acrescenta seções 7-10)
+Padrão: **Sonnet 5.5** com esforço baixo/médio. Opus 5.5 só quando o ganho de qualidade compensa.
+
+| Tipo de tarefa | Modelo | Esforço |
+|---|---|---|
+| Conversa, status, resumo, tradução, formatação, renomear, buscar um dado | Haiku 5.5 | baixo |
+| Extrair, listar, converter, conferir arquivos, coletar links/dados | Haiku 5.5 | baixo |
+| Copy, roteiro, legenda, edição de um arquivo, página simples, análise de planilha, pesquisa curta | Sonnet 5.5 | médio |
+| Código médio, painéis, revisão (QA) de entregas | Sonnet 5.5 | médio/alto |
+| Arquitetura, código grande, depuração difícil, estratégia com muitas fontes, decisão que muda vários agentes | Opus 5.5 | alto |
+
+- Na dúvida entre dois níveis, comece no menor e suba só se o resultado vier fraco (avise em uma linha).
+- Ao voltar a algo simples, desça de novo. Não fique no Opus "por via das dúvidas".
+
+## 5. Delegar para economizar
+- Subtarefas simples ou mecânicas (coletar dados, listar arquivos, resumir um documento, conferir formato) vão para subagente com `model: haiku`; trabalho de escrita ou análise média, `model: sonnet`. O agente principal só decide e junta o resultado.
+- Passe ao subagente só o necessário (trecho, não o documento inteiro) e peça resposta curta.
+- Um subagente por vez, salvo se as partes forem realmente independentes.
+- Se a sessão tiver as ferramentas `switch_model` e `set_effort_level`, use-as para descer/subir o nível da própria thread conforme a tabela acima.
+
+## 6. Hábitos de economia
+- **Uma tarefa por vez.** Termine, entregue, só então comece a próxima. Pedidos de assuntos diferentes pertencem a threads diferentes.
+- **Não releia documentos grandes.** Leia uma vez, anote o essencial em poucas linhas (ou na memória do projeto) e use as notas. Releia só o trecho que mudou.
+- **Respostas curtas**: resultado primeiro, sem recapitular o que o Marco já sabe; documentos longos viram arquivo, não mensagem.
+- **Sugira fechar threads concluídas** ("posso resolver esta thread?"): thread longa custa mais a cada mensagem porque o histórico inteiro é relido. Para um assunto novo, sugira thread nova.
+- Prefira ferramentas gratuitas e comandos locais a buscas pagas ou repetidas.
+
+## 7. Onde se gasta token à toa (e como evitar)
+| Desperdício | Como evitar |
+|---|---|
+| Reler arquivo ou skill grande inteiro | Ler só o trecho (grep + offset/limit). Anotar o essencial em 3 linhas e usar a nota. |
+| Revisar tudo a cada pedido | Revisar só o que mudou; QA pesado só antes de publicar. |
+| Respostas longas | Resultado primeiro, até ~5 linhas; texto grande vira arquivo. |
+| Thread longa sem limpar | Cada mensagem relê o histórico. Aplicar a regra de /clear e /compact (seção 9). |
+| Muitos subagentes | Um por vez; só em partes realmente independentes; sempre Haiku/Sonnet. |
+| Pesquisa repetida | Conferir a conversa e a memória antes de buscar de novo; guardar o resultado. |
+| Opus em tarefa simples | Começar no menor modelo (seção 4) e subir só se vier fraco. |
+| Contexto antigo | Assunto novo = thread nova ou /clear; não arrastar histórico. |
+| Anexos e saídas enormes | Pedir só as colunas/linhas/trechos necessários; cortar logs. |
+
+## 8. Padrão básico e quando subir
+- **Padrão de toda conversa: Haiku 5.5 ou Sonnet 5.5 com esforço baixo.** Conversa simples fica no básico.
+- Só avance para função mais elaborada quando a tarefa exigir (tabela da seção 4) e **diga ao Marco, em uma linha, qual modelo selecionar**.
+- Tabela de modelo por função do Marco (trocar no seletor de modelo):
+
+| Função | Padrão | Subir para |
+|---|---|---|
+| Dendro (pesquisa) | Haiku (coleta, links) | Sonnet (síntese); Opus só em pesquisa com muitas fontes e decisão grande |
+| Axon (vídeo/copy) | Sonnet | Opus só em roteiro/VSL longo de campanha principal |
+| Sinapse (social media) | Haiku (agenda, status) | Sonnet (legendas, calendário) |
+| Mielina (tráfego pago) | Sonnet | Opus só em estratégia de orçamento/escala |
+| Córtex (sites) | Sonnet | Opus só em plataforma grande ou depuração difícil |
+| Coordenação / Visão geral | Sonnet | Opus só em arquitetura ou decisão que muda vários agentes |
+
+- **Automação:** se existirem `switch_model` e `set_effort_level`, o agente troca sozinho e avisa em uma linha. Subagentes já nascem com `model: haiku/sonnet`. Sem essas ferramentas, orientar o Marco com o nome exato do modelo.
+
+## 9. Avisar o Marco: /clear e /compact
+- Avisar **na hora** (uma linha) quando:
+  - **Mudar de assunto ou o contexto estiver grande e sem uso:** "Hora de limpar: digite `/clear`."
+  - **Conversa longa sobre o mesmo assunto:** "Conversa longa, digite `/compact` para resumir e economizar."
+- Antes de sugerir `/clear`, salvar na memória do projeto o que precisa sobreviver. Preferir thread nova a arrastar histórico.
+- Depois do `/compact` ou `/clear`, retomar lendo só o necessário, sem reler tudo.
+
+## 10. Vale para tudo
+Todo agente e projeto atual ou futuro deve chamar o modo-economia no início (1-2 linhas na skill). Respostas curtas e objetivas sempre; em qualquer projeto.
+
 ## Limites
 Uma skill não troca o modelo da conversa sozinha. Ela escolhe modelos mais baratos para subagentes, reduz o esforço e enxuga o trabalho. Para trocar o modelo da conversa principal, a Jessica pede explicitamente ou muda nas configurações.
+O modelo da sessão principal vem do **modelo padrão do projeto** (Project settings). Para a economia valer de verdade, deixe o padrão de cada projeto (Visão geral, MWX, Meu Primeiro App, Lar com Propósito) em Sonnet 5.5 e peça Opus só nas tarefas complexas.
