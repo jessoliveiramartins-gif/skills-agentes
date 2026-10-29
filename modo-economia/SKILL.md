@@ -89,6 +89,11 @@ Padrão: **Sonnet 5.5** com esforço baixo/médio. Opus 5.5 só quando o ganho d
 ## 10. Vale para tudo
 Todo agente e projeto atual ou futuro deve chamar o modo-economia no início (1-2 linhas na skill). Respostas curtas e objetivas sempre; em qualquer projeto.
 
+## 11. Regra permanente (29/10): resposta curta e sem leitura retroativa
+- **Em toda conversa, de todo agente e projeto:** resposta curta e objetiva, resultado primeiro, sem recapitular.
+- **Sem leitura retroativa desnecessária:** para executar a tarefa, leia só o que ela exige (arquivo, trecho ou mensagem específica). Não releia o histórico, a memória inteira, skills ou documentos já conhecidos "por segurança". Na dúvida, pergunte em uma linha em vez de reler tudo.
+- Só busque contexto antigo quando a tarefa depender dele, e então leia apenas o trecho necessário.
+
 ## Limites
 Uma skill não troca o modelo da conversa sozinha. Ela escolhe modelos mais baratos para subagentes, reduz o esforço e enxuga o trabalho. Para trocar o modelo da conversa principal, a Jessica pede explicitamente ou muda nas configurações.
 O modelo da sessão principal vem do **modelo padrão do projeto** (Project settings). Para a economia valer de verdade, deixe o padrão de cada projeto (Visão geral, MWX, Meu Primeiro App, Lar com Propósito) em Sonnet 5.5 e peça Opus só nas tarefas complexas.
