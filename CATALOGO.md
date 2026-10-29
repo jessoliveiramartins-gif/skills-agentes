@@ -66,3 +66,6 @@ Kit grande (71 agentes, 311 skills, hooks) feito para programadores no Claude Co
 2. Este repositório guarda a cópia oficial de cada skill. Quando uma skill mudar, atualize a pasta aqui.
 3. As skills de fora com licença MIT foram traduzidas e adaptadas, com crédito no fim de cada arquivo. Não copiamos nenhuma inteira.
 4. Instalar direto só a do Remotion, porque é oficial e muda junto com a ferramenta.
+
+## Regra: modo-economia em tudo (28/10)
+Todo agente ou projeto novo deve chamar a skill `modo-economia` no início (1-2 linhas logo após o título). Já incluído em Dendro, Axon, Sinapse, Mielina, Córtex, empresa-dos-agentes e visao-geral-coordenador. A skill v3 traz: onde se gasta token à toa, tabela de modelo por função e avisos de `/clear` e `/compact`.
