@@ -66,3 +66,16 @@ Kit grande (71 agentes, 311 skills, hooks) feito para programadores no Claude Co
 2. Este repositório guarda a cópia oficial de cada skill. Quando uma skill mudar, atualize a pasta aqui.
 3. As skills de fora com licença MIT foram traduzidas e adaptadas, com crédito no fim de cada arquivo. Não copiamos nenhuma inteira.
 4. Instalar direto só a do Remotion, porque é oficial e muda junto com a ferramenta.
+
+## 5. Rodada 5 (30/10/2026): find-skills por agente
+Veredito completo no PR. Resumo:
+
+| Agente | Skill | Repositório | Licença | Veredito |
+|---|---|---|---|---|
+| Córtex | frontend-design | anthropics/skills | Apache-2.0 (LICENSE.txt da skill) | Adaptar: direção de design não genérica |
+| Córtex | page-cro, seo-audit | coreyhaines31/marketingskills | MIT | Adaptar: conversão e SEO de página |
+| Córtex | web-design-guidelines | vercel-labs/agent-skills | Sem LICENSE localizada; busca regras por URL em tempo de execução | Só citar, não copiar |
+| Sinapse | content-strategy | coreyhaines31/marketingskills | MIT | Adaptar: pautas por demanda (já era ideia) |
+| Mielina | nada novo | | | Já coberta (ads, ad-creative, offers) |
+| Dendro | nada novo | | | Já coberta; achados eram skills de código |
+| Axon | cut-as-code | WhiteTowerAI/cut-as-code | MIT | Só referência: roda serviço local (Editor Hub); Axon Estúdio e skills atuais ficam intactos |
