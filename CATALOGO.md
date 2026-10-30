@@ -15,6 +15,7 @@ Atualizado em 26/10/2026. Pesquisa do Dendro no GitHub público. Só entram skil
 | axon-cortes | Axon | **Só proposta.** Salvar pelo cartão |
 | dendro-concorrentes | Dendro | Salva |
 | voz-da-marca | Axon, Sinapse | Salva |
+| find-skills | Todos | **Só proposta.** Salvar pelo cartão (adaptada de vercel-labs/skills, MIT) |
 | ciclos-dos-agentes | Todos | Recusada pelo Marco (fica só no repositório, como referência) |
 
 A versão mais nova de cada uma está nas pastas deste repositório.

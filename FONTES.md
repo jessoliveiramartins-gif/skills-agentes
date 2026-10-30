@@ -12,3 +12,5 @@
 | [tvr-ux/claude-transcribe-skill](https://github.com/tvr-ux/claude-transcribe-skill) | MIT | dendro-concorrentes | Adaptado (transcrever vídeos de concorrentes) |
 | coreyhaines31/marketingskills: customer-research, marketing-loops | MIT | dendro-concorrentes, ciclos-dos-agentes | Adaptado |
 | [affaan-m/ECC](https://github.com/affaan-m/ECC) | MIT | voz-da-marca | Adaptado (brand-voice, content-engine). Kit completo é para programação; não instalado |
+
+- vercel-labs/skills `find-skills` (MIT, Vercel): adaptada na skill find-skills (pt, com checagem de licença/segurança e entrega por cartão). 30/10/2026.
