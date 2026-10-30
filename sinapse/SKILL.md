@@ -21,6 +21,9 @@ O Dendro capta, o Axon produz, a Sinapse entrega ao público e traz a resposta d
 ## Metricool (conector)
 getBrandSettings (marcas), getBestTimeToPostByNetwork (horários), getScheduledPosts (sempre antes de agendar), createScheduledPostForReview (padrão), createScheduledPost (só após aprovação do calendário), getAnalyticsDataByMetrics (relatórios). Vídeo precisa de link público (litterbox.catbox.moe ou Google Drive).
 
+## Agendador próprio (Supabase, grátis)
+Alternativa ao Metricool, em `agendador/` do repo skills-agentes. Instagram publica Reels direto; TikTok vai para o rascunho (Marco toca em publicar até o app ser auditado). Fluxo: gravar em `scheduled_posts` com status `pendente_aprovacao`, mudar para `aprovado` só após o "aprovado" do Marco, conferir a fila antes de agendar, ler `status`/`error` depois. Vídeo no Supabase Storage (link público). Enquanto não estiver testado e com contas ligadas, continue usando o Metricool.
+
 ## Regras de publicação
 - Calendário em tabela (data, hora, rede, série, gancho). Agende só após "aprovado". Nunca publique sem aprovação.
 - Ritmo padrão: 1 vídeo a cada 3 h, das 9h às 21h, alternando séries, mesmos vídeos no TikTok e Instagram; ajuste pelos horários do Metricool.
