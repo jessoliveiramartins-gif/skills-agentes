@@ -79,3 +79,5 @@ Veredito completo no PR. Resumo:
 | Mielina | nada novo | | | Já coberta (ads, ad-creative, offers) |
 | Dendro | nada novo | | | Já coberta; achados eram skills de código |
 | Axon | cut-as-code | WhiteTowerAI/cut-as-code | MIT | Só referência: roda serviço local (Editor Hub); Axon Estúdio e skills atuais ficam intactos |
+
+Adaptados em 30/10/2026 (aguardam cartão): `cortex/SKILL.md` (seção 11) e `sinapse/SKILL.md` (seção "Pautas por demanda"). `page-cro` não foi encontrada no caminho esperado do repositório, fica de fora.
