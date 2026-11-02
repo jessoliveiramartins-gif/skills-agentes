@@ -12,3 +12,6 @@
 | [tvr-ux/claude-transcribe-skill](https://github.com/tvr-ux/claude-transcribe-skill) | MIT | dendro-concorrentes | Adaptado (transcrever vídeos de concorrentes) |
 | coreyhaines31/marketingskills: customer-research, marketing-loops | MIT | dendro-concorrentes, ciclos-dos-agentes | Adaptado |
 | [affaan-m/ECC](https://github.com/affaan-m/ECC) | MIT | voz-da-marca | Adaptado (brand-voice, content-engine). Kit completo é para programação; não instalado |
+| yt-dlp, auto-editor | Unlicense | axon-remodelar-link, edição | Ferramentas de linha de comando (01/11/2026). auto-editor ainda não integrado |
+| faster-whisper, rembg, PySceneDetect, mozilla/readability | MIT / MIT / BSD-3 / Apache 2.0 | axon-remodelar-link, axon-imagens | Usadas como ferramentas, sem copiar código |
+| comfyanonymous/ComfyUI, shawnrushefsky/comfyui-mcp | GPL-3.0 / MIT | axon-imagens (futuro) | Só com GPU local. Sem licença: wilwaldon/Claude-Code-Video-Toolkit (não usar) |

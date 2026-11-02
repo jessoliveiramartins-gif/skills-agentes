@@ -9,6 +9,8 @@ Atualizado em 26/10/2026. Pesquisa do Dendro no GitHub público. Só entram skil
 | dendro-buscador | Dendro | Salva (versão antiga). Versão nova com método profundo e checagem de fatos aguarda o cartão |
 | axon-editor-de-video | Axon | Salva (versão antiga). Versão nova com copy anti-IA e criativo de anúncio aguarda o cartão |
 | axon-desempenho | Axon | Salva |
+| axon-remodelar-link | Axon | **Proposta (01/11).** Link colado -> roteiro/copy novo (yt-dlp, whisper). Salvar pelo cartão |
+| axon-imagens | Axon | **Proposta (01/11).** Capas e carrosséis por código + rembg. Salvar pelo cartão |
 | modo-economia | Todos | Salva |
 | mielina-trafego-pago | Mielina | **Só proposta.** Salvar pelo cartão |
 | sinapse-social-media | Sinapse | **Só proposta.** Salvar pelo cartão |
