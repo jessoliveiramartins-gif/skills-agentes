@@ -15,3 +15,5 @@
 | yt-dlp, auto-editor | Unlicense | axon-remodelar-link, edição | Ferramentas de linha de comando (01/11/2026). auto-editor ainda não integrado |
 | faster-whisper, rembg, PySceneDetect, mozilla/readability | MIT / MIT / BSD-3 / Apache 2.0 | axon-remodelar-link, axon-imagens | Usadas como ferramentas, sem copiar código |
 | comfyanonymous/ComfyUI, shawnrushefsky/comfyui-mcp | GPL-3.0 / MIT | axon-imagens (futuro) | Só com GPU local. Sem licença: wilwaldon/Claude-Code-Video-Toolkit (não usar) |
+| [kepano/obsidian-skills](https://github.com/kepano/obsidian-skills) | MIT | base-de-conhecimento | Adaptada a sintaxe Obsidian (wikilinks, callouts, propriedades). Obsidian é grátis para uso pessoal (04/11/2026) |
+| [HKUDS/LightRAG](https://github.com/HKUDS/LightRAG) | MIT | base-de-conhecimento | Opcional. Grátis só com modelo local (Ollama); com API paga exige aprovação do Marco (04/11/2026) |
