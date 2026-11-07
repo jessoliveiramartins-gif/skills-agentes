@@ -901,16 +901,21 @@ function legPart(x0,y0,x1,y1,wk,wa,col){
   ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(x0-1,y0+2);ctx.lineTo(x1-1,y1-2);ctx.stroke();
 }
 function shoeAt(x,y,sx,col){
-  ctx.fillStyle=col;ctx.beginPath();ctx.ellipse(x+sx,y+7.5,5.8,8.6,sx*.06,0,7);ctx.fill();
-  ctx.fillStyle='rgba(255,255,255,.22)';ctx.beginPath();ctx.ellipse(x+sx-1.6,y+5,1.6,3.4,sx*.06,0,7);ctx.fill();
+  const tx=x+sx*2.2;
+  ctx.fillStyle='rgba(0,0,0,.28)';ctx.beginPath();ctx.ellipse(tx,y+15.5,7.5,2.6,0,0,7);ctx.fill();
+  ctx.fillStyle=shade(col,.75);ctx.beginPath();ctx.moveTo(x-4.6,y-1);ctx.lineTo(x+4.6,y-1);ctx.quadraticCurveTo(tx+7.4,y+8,tx+6,y+13.4);ctx.quadraticCurveTo(tx,y+16.6,tx-6,y+13.4);ctx.quadraticCurveTo(tx-7.4,y+8,x-4.6,y-1);ctx.fill();
+  const g=ctx.createLinearGradient(0,y-1,0,y+14);g.addColorStop(0,shade(col,1.6));g.addColorStop(1,col);
+  ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(x-4.2,y-1);ctx.lineTo(x+4.2,y-1);ctx.quadraticCurveTo(tx+6.6,y+7,tx+5.2,y+12);ctx.quadraticCurveTo(tx,y+14.6,tx-5.2,y+12);ctx.quadraticCurveTo(tx-6.6,y+7,x-4.2,y-1);ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,.28)';ctx.beginPath();ctx.ellipse(tx-1.8,y+9.4,1.5,2.6,sx*.15,0,7);ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(x-2.4,y+2.4);ctx.lineTo(x+2.4,y+2.4);ctx.moveTo(x-2.2,y+4.4);ctx.lineTo(x+2.2,y+4.4);ctx.stroke();
 }
 function seatedLegs(a,fx,fy){
-  const pc=pantsOf(a),sh=a.look&&a.look.shoe||'#15161b',ph=a.seed,s=Math.sin(T*.6+ph)*.8;
+  const pc=pantsOf(a),sh=a.look&&a.look.shoe||'#2a2420',ph=a.seed,s=Math.sin(T*.6+ph)*.8;
   const L=[fx-10+((ph*7)%3),fy-23],R=[fx+10-((ph*5)%3),fy-24];
   // coxas (quase sempre atrás do tampo)
   ctx.fillStyle=shade(pc,.9);ctx.beginPath();ctx.moveTo(fx-19,fy-52);ctx.lineTo(fx+19,fy-52);ctx.lineTo(R[0]+8,R[1]);ctx.lineTo(L[0]-8,L[1]);ctx.closePath();ctx.fill();
-  const AL=[L[0]-2+s*.3,fy+24],AR=[R[0]+2-s*.3,fy+25];
-  legPart(L[0],L[1],AL[0],AL[1],7.2,4.6,pc);legPart(R[0],R[1],AR[0],AR[1],7.2,4.6,pc);
+  const AL=[L[0]-2+s*.3,fy+20],AR=[R[0]+2-s*.3,fy+21];
+  legPart(L[0],L[1],AL[0],AL[1],8,5,pc);legPart(R[0],R[1],AR[0],AR[1],8,5,pc);
   shoeAt(AL[0],AL[1],-1.2,sh);shoeAt(AR[0],AR[1],1.2,sh);
 }
 function seatedAgent(a){
@@ -961,7 +966,7 @@ function seatDesk(a){
   // asa da frente (ao longo de x)
   r.push(add(px+py+.7,()=>{
     shadowAt(ax0,py+I0,LA,DD,.14);
-    legAt(ax0+.06,py+I0+.06);legAt(ax0+.06,yo-.13);legAt(xo-.13,yo-.13);
+    legAt(ax0+.06,py+I0+.06);legAt(ax0+.06,yo-.13);
     // saia frontal curta só na parte esquerda, com o nome
     box(ax0+.12,yo-.1,LA-1.55,.05,14,TZ-14,dark);
     if(!a.empty)decal('N',yo-.05,ax0+.4,ax0+LA-1.7,TZ-13,11,(w,h)=>{ctx.font=`800 8px ${FF}`;ctx.fillStyle=shade(acc,1.3);ctx.textBaseline='middle';ctx.textAlign='center';ctx.fillText(a.name.toUpperCase(),w/2,h/2+.5)});
