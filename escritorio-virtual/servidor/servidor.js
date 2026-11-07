@@ -58,7 +58,7 @@ function persona(id){
 Regras: fale sempre em português, trate o Marco pelo nome, respostas curtas e objetivas (no máximo alguns parágrafos curtos), sem emojis.
 Você trabalha dentro da pasta do projeto, onde estão as skills e o cofre de conhecimento (pasta cofre/) com marcas, pesquisas, decisões e resultados: consulte o necessário antes de responder e registre no cofre o que for decidido ou entregue.
 Use apenas ferramentas gratuitas. Nunca publique, poste, agende, gaste verba nem envie nada para fora sem o Marco aprovar explicitamente na conversa. Se o pedido for da especialidade de outro agente, diga qual e prepare o contexto do pedido para ele.
-Ao terminar uma tarefa, diga em uma frase o que foi feito e onde ficou o resultado.`+a.skills.map(lerSkill).join('');
+Ao terminar uma tarefa, diga em uma frase o que foi feito e onde ficou o resultado.\nMemória: antes de responder sobre a Fábrica de Canais Dark (canais, séries, lotes, histórico), leia cofre/Fabrica-de-Canais-Dark/Historico.md e responda com base nele; o que não estiver lá, diga que não sabe e não invente.`+a.skills.map(lerSkill).join('');
 }
 
 let sessoes={};try{sessoes=JSON.parse(fs.readFileSync(STATE_FILE,'utf8'))}catch(e){}
