@@ -335,7 +335,7 @@ const FLOW=[['dendro','axon'],['axon','sinapse'],['sinapse','mielina'],['fabrik'
 AGENTS.forEach((a,i)=>{
   const r=ROOMS[a.room];
   if(a.kind==='Agente'){a.seat={x:r.x+4.9,y:r.y+1.8};a.desk={x:r.x+3.3,y:r.y+2.25}}
-  else{a.seat={x:r.x+a.dx+1.1,y:r.y+1.65};a.desk={x:r.x+a.dx,y:r.y+2};if(a.look&&a.look.robot)a.stand={x:a.desk.x+2.75,y:a.desk.y+.85}}
+  else{a.seat={x:r.x+a.dx+1.1,y:r.y+1.65};a.desk={x:r.x+a.dx,y:r.y+2};if(a.look&&a.look.robot)a.stand={x:a.desk.x+2.5,y:a.desk.y+.9}}
   initSt(a,i);
 });
 function initSt(a,i){
@@ -838,7 +838,7 @@ function workstation(a){
 }
 
 /* ---------- PERSONAGENS REAIS (recortes das imagens oficiais) ---------- */
-const BUST_H=114,ROBOT_H=98;
+const BUST_H=114,ROBOT_H=122;
 function rgbaH(h,al){const[r,g,b]=hex2(h);return `rgba(${r},${g},${b},${al})`}
 function bakeSprite(a,im){
   const w=im.naturalWidth,h=im.naturalHeight,robot=!!(a.look&&a.look.robot);
