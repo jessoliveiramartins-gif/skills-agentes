@@ -92,6 +92,17 @@ canvas#c.grab{cursor:grabbing} canvas#c.hot{cursor:pointer}
 .send:disabled{opacity:.5}
 .sim{font-size:11px;color:var(--mut);padding:0 14px 8px}
 .sim a{color:#a9bcff;cursor:pointer;text-decoration:underline}
+#ifc{overflow:auto;padding:14px;display:none;flex-direction:column;gap:12px}
+.kb{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.kb>div{background:#0e1530;border:1px solid var(--line);border-radius:10px;padding:8px;min-height:120px}
+.kb h6{font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:var(--mut);margin-bottom:6px;display:flex;justify-content:space-between}
+.kc{font-size:11.5px;line-height:1.3;padding:6px 8px;border-radius:8px;margin-bottom:6px;background:var(--panel2);border-left:3px solid var(--acc)}
+.kc small{display:block;color:var(--mut);font-size:10px;margin-top:2px}
+.ifh{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--mut)}
+.ifh b{color:var(--txt);font-size:13.5px}
+.row2{display:grid;grid-template-columns:76px 1fr 38px;gap:8px;align-items:center;font-size:12px;margin-bottom:7px}
+.row2 .bar{height:8px}
+.dm{font-size:10.5px;color:var(--mut)}
 #det{overflow:auto;padding:14px;display:none;flex-direction:column;gap:14px}
 #det h5{font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--mut);margin-bottom:6px}
 #det p,#det li{font-size:13px;line-height:1.45;color:#d6def7}
@@ -163,7 +174,7 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end}
         <button class="x" id="chX" title="Fechar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       </div>
       <div class="task"><small>Tarefa atual</small><p id="chTask"></p><div class="bar"><i id="chBar"></i></div></div>
-      <div class="tabs"><button class="on" data-tab="c">Conversa</button><button data-tab="d">Detalhes</button></div>
+      <div class="tabs"><button class="on" data-tab="c">Conversa</button><button data-tab="i" id="tabI" style="display:none">Interface</button><button data-tab="d">Detalhes</button></div>
       <div class="pane" id="paneC">
         <div id="msgs"></div>
         <div class="chips" id="chips"></div>
@@ -173,18 +184,21 @@ dialog .row{display:flex;gap:8px;justify-content:flex-end}
           <button class="send" id="sendB" type="submit" title="Enviar"><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
         </form>
       </div>
+      <div class="pane" id="ifc"></div>
       <div class="pane" id="det"></div>
     </section>
   </main>
 </div>
 <dialog id="dlg">
   <h3>Conectar a um backend</h3>
-  <p>Por enquanto as respostas são simuladas. Para ligar os agentes de verdade, informe uma URL que aceite <code>POST</code> com <code>{agent, message, history, context}</code> e responda <code>{reply}</code>. Deixe vazio para voltar ao modo simulado. Se o endereço falhar, o escritório usa a simulação.</p>
-  <input id="dlgUrl" type="url" placeholder="https://seu-servidor.exemplo/agentes" autocomplete="off">
+  <p>Rode no seu computador <code>node escritorio-virtual/servidor/servidor.js</code>. Se abrir o endereço que ele mostra (http://127.0.0.1:8787), já fica tudo conectado. Para usar esta página publicada, informe o endereço e o token que o servidor exibe. Vazio = respostas simuladas.</p>
+  <input id="dlgUrl" type="url" placeholder="http://127.0.0.1:8787" autocomplete="off">
+  <input id="dlgTok" type="text" placeholder="Token do servidor" autocomplete="off">
   <div class="row"><button class="btn" id="dlgNo" type="button">Cancelar</button><button class="btn p" id="dlgOk" type="button">Salvar</button></div>
 </dialog>
 
 <script>
+window.__AGENT_SERVER__=/*SERVER*/null;
 (()=>{
 'use strict';
 /* =====================================================================
@@ -285,6 +299,7 @@ function curTask(a){return a.st.working?(a.st.override||a.tasks[a.st.ti]):a.idle
    ATIVIDADE (feed) E CICLO DE TRABALHO
    ===================================================================== */
 const feed=[];
+const handoffs=[{from:'dendro',to:'axon',label:'Pesquisa de ganchos de vídeos curtos',t:performance.now()-20000},{from:'axon',to:'sinapse',label:'Reel 9:16 com legenda',t:performance.now()-40000}];
 const hhmm=()=>new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
 function logEv(html){feed.unshift({t:hhmm(),h:html});feed.length=Math.min(feed.length,30);renderFeed()}
 function renderFeed(){
@@ -293,6 +308,7 @@ function renderFeed(){
 function tickAgents(dt,now){
   for(const a of AGENTS){
     const s=a.st;
+    if(s.real)continue;
     if(s.working){
       s.prog+=dt*s.speed*3.2;
       if(s.prog>=100){
@@ -301,6 +317,7 @@ function tickAgents(dt,now){
         s.done.unshift(label);s.done.length=Math.min(s.done.length,6);
         logEv(`<b>${a.name}</b> concluiu: ${label.toLowerCase()}`);
         const f=FLOW.find(p=>p[0]===a.id);
+        if(f)handoffs.unshift({from:a.id,to:f[1],label:label,t:performance.now()});handoffs.length=Math.min(handoffs.length,12);
         if(f&&Math.random()<.6)setTimeout(()=>logEv(`<b>${a.name}</b> passou o resultado para <b>${byId[f[1]].name}</b>`),900);
         s.override=null;s.ti=(s.ti+1)%a.tasks.length;
         if(Math.random()<.4){s.working=false;s.idleUntil=now+9000+Math.random()*12000}
@@ -347,24 +364,50 @@ function simulate(a,text){
   logEv(`<b>${a.name}</b> recebeu um pedido do Marco`);
   return `Entendi, Marco: "${snip}". ${a.plan} Começo por ${a.first}.`;
 }
-function getBackend(){return store.get('backend','')}
+/* Servidor: automático quando a página é aberta pelo servidor local; ou manual (URL + token) pelo botão Conectar. */
+function getServer(){
+  const s=window.__AGENT_SERVER__;if(s&&s.url)return{url:s.url.replace(/\/$/,''),token:s.token,auto:true};
+  const u=store.get('backend','');if(!u)return null;
+  return{url:u.replace(/\/$/,'').replace(/\/chat$/,''),token:store.get('token',''),auto:false};
+}
+const getBackend=()=>!!getServer();
+let srvOnline=false;
 const AgentAPI={
-  /* Troque aqui por uma chamada real quando houver backend. */
+  /* Com servidor: pergunta ao agente de verdade (Claude Code local). Sem servidor: simulação. */
   async send(agent,text,history){
-    const url=getBackend();
-    if(url){
+    const srv=getServer();
+    if(srv){
+      const ctrl=new AbortController();const to=setTimeout(()=>ctrl.abort(),330000);
       try{
-        const ctrl=new AbortController();const to=setTimeout(()=>ctrl.abort(),20000);
-        const r=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},signal:ctrl.signal,
+        const r=await fetch(srv.url+'/chat',{method:'POST',headers:{'Content-Type':'application/json','x-token':srv.token||''},signal:ctrl.signal,
           body:JSON.stringify({agent:agent.id,message:text,history:history.slice(-20).map(m=>({role:m.role,text:m.text})),context:{role:agent.role,task:curTask(agent),status:agent.st.working?'trabalhando':'ocioso'}})});
-        clearTimeout(to);
-        if(r.ok){const j=await r.json();if(j&&j.reply)return{reply:String(j.reply),source:'backend'}}
-      }catch(e){}
+        const j=await r.json().catch(()=>({}));
+        if(!r.ok||!j.reply)throw new Error(j.error||('Servidor respondeu '+r.status));
+        return{reply:String(j.reply),source:'agente real'};
+      }catch(e){
+        throw new Error(e.name==='AbortError'?'Tempo esgotado.':(e.message==='Failed to fetch'?'Não consegui falar com o servidor local. Ele está ligado?':e.message));
+      }finally{clearTimeout(to)}
     }
     await delay(800+Math.random()*900);
     return{reply:simulate(agent,text),source:'simulado'};
   }
 };
+/* Estado real: agentes que o servidor está executando agora aparecem como trabalhando. */
+async function pollServer(){
+  const srv=getServer();if(!srv){srvOnline=false;return}
+  try{
+    const r=await fetch(srv.url+'/state',{headers:{'x-token':srv.token||''}});if(!r.ok)throw 0;
+    const j=await r.json();const was=srvOnline;srvOnline=true;
+    for(const a of AGENTS){
+      const b=j.ocupados&&j.ocupados[a.id];
+      if(b){if(!a.st.real){a.st.real=true;a.st.working=true;a.st.prog=8;logEv(`<b>${a.name}</b> está executando um pedido do Marco`)}
+        a.st.override=b.tarefa;a.st.prog=Math.min(92,a.st.prog+1.2);a.st.working=true}
+      else if(a.st.real){a.st.real=false;a.st.override=null;a.st.prog=100;logEv(`<b>${a.name}</b> entregou o pedido do Marco`)}
+    }
+    if(!was&&sceneSel)updateChatHead();refreshUI();
+  }catch(e){if(srvOnline){srvOnline=false;if(sceneSel)updateChatHead()}}
+}
+setInterval(pollServer,2500);
 
 /* =====================================================================
    MOTOR ISOMÉTRICO
@@ -555,12 +598,19 @@ function screenFx(kind,w,h,on,col,seed){
     for(let i=0;i<3;i++){ctx.fillStyle='#22315f';ctx.fillRect(4+i*(w-8)/3,h*.55,(w-8)/3-3,h*.38)}
     if(((T*2)|0)%2){ctx.fillStyle='#fff';ctx.fillRect(w*.62+14,h*.62,1.5,6)}break;
    case 'flow':{
-    const N=[[.15,.3],[.45,.2],[.8,.3],[.3,.7],[.65,.72]];ctx.strokeStyle='#22d3ee';ctx.lineWidth=1;ctx.globalAlpha=.6;
-    [[0,1],[1,2],[0,3],[1,3],[1,4],[2,4],[3,4]].forEach(e=>{ctx.beginPath();ctx.moveTo(N[e[0]][0]*w,N[e[0]][1]*h);ctx.lineTo(N[e[1]][0]*w,N[e[1]][1]*h);ctx.stroke()});ctx.globalAlpha=1;
-    N.forEach((n,i)=>{ctx.fillStyle=i===1?'#fff':'#06b6d4';ctx.beginPath();ctx.arc(n[0]*w,n[1]*h,3.2+(i===1?1.4:0),0,7);ctx.fill()});
-    const e=[[0,1],[1,2],[1,3],[3,4]][((T*.8)|0)%4],p=(T*.8)%1;ctx.fillStyle='#fde047';ctx.beginPath();ctx.arc((N[e[0]][0]+(N[e[1]][0]-N[e[0]][0])*p)*w,(N[e[0]][1]+(N[e[1]][1]-N[e[0]][1])*p)*h,2.6,0,7);ctx.fill();break}
-   case 'factory':
-    for(let i=0;i<5;i++){const y=6+i*(h-9)/5;ctx.fillStyle='#1b2646';ctx.fillRect(4,y,w-8,5);ctx.fillStyle=i%2?'#f97316':'#fb923c';ctx.fillRect(4,y,(w-8)*(((T*.12+i*.23+seed)%1)),5)}break;
+    const big=w>60,cols=['#334155','#0e7490','#047857'],names=['FILA','PASSANDO','ENTREGUE'];
+    const cw=(w-8)/3;
+    for(let c=0;c<3;c++){const x=3+c*(cw+1);ctx.fillStyle='#111c36';ctx.fillRect(x,5,cw-1,h-7);ctx.fillStyle=cols[c];ctx.fillRect(x,5,cw-1,big?6:3);
+      if(big){ctx.fillStyle='#e2e8f0';ctx.font='700 4.6px sans-serif';ctx.textBaseline='top';ctx.fillText(names[c],x+2,6.2)}
+      for(let k=0;k<3;k++){const yy=(big?13:9)+k*(big?8:4.6)+(c===1?Math.sin(T*2+k)*1.2:0);ctx.fillStyle=['#06b6d4','#14b8a6','#8b5cf6','#ec4899','#f59e0b','#3b82f6'][(c*3+k)%6];ctx.fillRect(x+1.5,yy,cw-4,big?6:3)}}
+    const p=(T*.5)%1;ctx.fillStyle='#fde047';ctx.beginPath();ctx.arc(3+cw*(.5+p*2.0),h-4,1.6,0,7);ctx.fill();break}
+   case 'factory':{
+    const big=w>60;
+    ctx.fillStyle='#e2e8f0';if(big){ctx.font='700 5px sans-serif';ctx.textBaseline='top';ctx.fillText('FABRICA DE CANAIS',4,5)}
+    for(let i=0;i<5;i++){const y=(big?14:6)+i*(h-(big?17:9))/5,pg=((T*.1+i*.21+seed)%1);
+      ctx.fillStyle='#1b2646';ctx.fillRect(big?18:4,y,w-(big?22:8),big?4.2:3.4);ctx.fillStyle=i%2?'#f97316':'#fb923c';ctx.fillRect(big?18:4,y,(w-(big?22:8))*pg,big?4.2:3.4);
+      if(big){ctx.fillStyle='#94a3b8';ctx.font='600 4.2px sans-serif';ctx.fillText('Parte '+(i+1),4,y)}}
+    break}
   }
   ctx.restore();
 }
@@ -882,11 +932,14 @@ function drawTag(a,sx,sy,s){
 /* ---------- câmera e interação ---------- */
 const BOUNDS={x0:-730,x1:1110,y0:-90,y1:975};
 function minZoom(){return Math.min(VW/(BOUNDS.x1-BOUNDS.x0),VH/(BOUNDS.y1-BOUNDS.y0))*.98}
-function fit(animate){
+function fit(animate,mode){
+  mode=mode||'near';
   const rw=(!matchMedia('(max-width:860px)').matches)?292:0,top=matchMedia('(max-width:860px)').matches?64:0;
   const aw=VW-rw,ah=VH-top;
-  const z=Math.min(aw/(BOUNDS.x1-BOUNDS.x0),ah/(BOUNDS.y1-BOUNDS.y0))*.98;
-  const t={z,x:rw+aw/2-((BOUNDS.x0+BOUNDS.x1)/2)*z,y:top+ah/2-((BOUNDS.y0+BOUNDS.y1)/2)*z};
+  const zAll=Math.min(aw/(BOUNDS.x1-BOUNDS.x0),ah/(BOUNDS.y1-BOUNDS.y0))*.98;
+  const near=mode==='near',z=near?zAll*1.4:zAll;
+  const cx=near?200:(BOUNDS.x0+BOUNDS.x1)/2,cy=near?335:(BOUNDS.y0+BOUNDS.y1)/2;
+  const t={z,x:rw+aw/2-cx*z,y:top+ah/2-cy*z};
   animate?camTgt=t:(Object.assign(cam,t),camTgt=null);
 }
 function focusAgent(a){
@@ -934,8 +987,8 @@ cv.addEventListener('pointerleave',()=>{sceneHover=null});
 cv.addEventListener('wheel',e=>{e.preventDefault();zoomAt(Math.exp(-e.deltaY*.0015),e.offsetX,e.offsetY)},{passive:false});
 $('#bIn').onclick=()=>zoomAt(1.25,VW/2,VH/2);
 $('#bOut').onclick=()=>zoomAt(.8,VW/2,VH/2);
-$('#bFit').onclick=()=>{closeChat();fit(true)};
-window.addEventListener('resize',()=>{resize();if(!sceneSel)fit(false)});
+$('#bFit').onclick=()=>{closeChat();fit(true,'all')};
+window.addEventListener('resize',()=>{resize();if(!sceneSel)fit(false,'near')});
 
 /* =====================================================================
    INTERFACE: lista, chat, detalhes
@@ -968,9 +1021,10 @@ function updateChatHead(){
   $('#chSt').innerHTML=`<span class="dot ${w?'on':'idle'}"></span>${w?'Trabalhando':'Em espera'}`;
   $('#chTask').textContent=curTask(a);
   const bar=$('#chBar');bar.style.width=(w?a.st.prog:0)+'%';bar.style.background=a.color;
-  $('#sim').innerHTML=getBackend()?'Conectado a um backend. <a id="simCfg">Alterar</a>':'Respostas simuladas por enquanto. <a id="simCfg">Conectar um backend</a>';
+  $('#sim').innerHTML=getBackend()?(srvOnline?'Conectado ao servidor local: respostas reais do agente. ':'Servidor local configurado, mas sem resposta. ')+'<a id="simCfg">Ajustar</a>':'Respostas simuladas por enquanto. <a id="simCfg">Conectar o servidor local</a>';
   const l=$('#simCfg');if(l)l.onclick=openCfg;
   renderDetails(a);
+  const hasI=a.id==='nexo'||a.id==='fabrik';$('#tabI').style.display=hasI?'':'none';if(!hasI&&curTab==='i')setTab('c');
 }
 function renderDetails(a){
   $('#det').innerHTML=`<div><h5>Função</h5><p>${a.does}</p></div>
@@ -980,6 +1034,27 @@ function renderDetails(a){
   <div><button class="btn" id="clr">Limpar conversa</button></div>`;
   $('#clr').onclick=()=>{store.set('chat:'+a.id,[]);startChat(a);setTab('c')};
 }
+function renderIfc(){
+  const a=byId[sceneSel];if(!a||curTab!=='i')return;const now=performance.now();let h='';
+  if(a.id==='nexo'){
+    const col=st=>handoffs.filter(x=>st===0?false:st===1?now-x.t<8000:now-x.t>=8000).slice(0,4);
+    const card=x=>`<div class="kc" style="border-color:${byId[x.from].color}">${esc(x.label.length>46?x.label.slice(0,45)+'...':x.label)}<small>${byId[x.from].name} para ${byId[x.to].name}</small></div>`;
+    const queue=AGENTS.filter(b=>b.st.working&&b.id!=='nexo').slice(0,3).map(b=>`<div class="kc" style="border-color:${b.color}">${esc(curTask(b))}<small>em andamento: ${b.name}</small></div>`).join('');
+    h=`<div class="ifh"><b>Roteador de passagens</b><span>${srvOnline?'servidor ligado':'modo demonstração'}</span></div>
+    <div class="kb"><div><h6>Na fila <span>${queue?'':'0'}</span></h6>${queue||'<span class="dm">Vazia</span>'}</div><div><h6>Passando</h6>${col(1).map(card).join('')||'<span class="dm">Nada agora</span>'}</div><div><h6>Entregue</h6>${col(2).map(card).join('')||'<span class="dm">Nada ainda</span>'}</div></div>
+    <div><h5 style="font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;color:var(--mut);margin-bottom:6px">Cofre (memória comum)</h5><div class="cs" style="display:flex;gap:6px;flex-wrap:wrap">${['Marcas','Pesquisas','Roteiros','Calendario','Anuncios','Sites','Decisoes','Resultados'].map(n=>`<span style="font-size:12px;padding:4px 9px;border-radius:99px;background:var(--panel2);border:1px solid var(--line)">${n}</span>`).join('')}</div></div>
+    <div class="dm">Ao conectar o servidor local, cada passagem registrada vira nota no cofre.</div>`;
+  }else{
+    const k=a.st.ti%5,parts=[0,1,2,3,4].map(i=>i<k?100:i===k?(a.st.working?a.st.prog:0):0);
+    const tot=Math.round(parts.reduce((x,y)=>x+y,0)/5);
+    h=`<div class="ifh"><b>Fábrica de canais dark</b><span>Lote atual: ${tot}%</span></div>
+    <div>${parts.map((p,i)=>`<div class="row2"><span>Parte ${i+1}</span><div class="bar"><i style="width:${p}%;background:${p>=100?'#34d399':'#f97316'}"></i></div><span>${Math.round(p)}%</span></div>`).join('')}</div>
+    <div class="kb"><div><h6>Roteiro</h6><div class="kc" style="border-color:#34d399">Série em partes<small>aprovado</small></div></div><div><h6>Narração</h6><div class="kc" style="border-color:#f59e0b">Fila de voz<small>${a.st.working?'gerando':'parada'}</small></div></div><div><h6>Render</h6><div class="kc" style="border-color:#f97316">Vídeos em lote<small>${a.st.working?'na esteira':'aguardando'}</small></div></div></div>
+    <div class="dm">Nada é publicado sem a aprovação do Marco.</div>`;
+  }
+  $('#ifc').innerHTML=h;
+}
+setInterval(renderIfc,1000);
 function chipsFor(a){return['O que você está fazendo agora?','Qual é o seu próximo passo?','Me dê um resumo do que entregou','O que você faz aqui?']}
 function startChat(a){
   let arr=loadChat(a.id);
@@ -988,9 +1063,10 @@ function startChat(a){
   $('#chips').innerHTML=chipsFor(a).map(c=>`<button type="button">${c}</button>`).join('');
   $('#chips').querySelectorAll('button').forEach(b=>b.onclick=()=>send(b.textContent));
 }
+let curTab='c';
 function setTab(t){
   document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));
-  $('#paneC').style.display=t==='c'?'flex':'none';$('#det').style.display=t==='d'?'flex':'none';
+  $('#paneC').style.display=t==='c'?'flex':'none';$('#ifc').style.display=t==='i'?'flex':'none';curTab=t;if(t==='i')renderIfc();$('#det').style.display=t==='d'?'flex':'none';
 }
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
 function openChat(id){
@@ -1008,7 +1084,7 @@ async function send(text){
   sending=true;$('#sendB').disabled=true;
   const arr=loadChat(a.id);arr.push({role:'user',text,ts:Date.now()});saveChat(a.id,arr);renderMsgs(a);
   const msgs=$('#msgs');msgs.insertAdjacentHTML('beforeend','<div class="m a" id="typ"><span class="typing"><i></i><i></i><i></i></span></div>');msgs.scrollTop=msgs.scrollHeight;
-  let res;try{res=await AgentAPI.send(a,text,arr)}catch(e){res={reply:'Não consegui responder agora. Tente de novo em instantes.',source:'erro'}}
+  let res;try{res=await AgentAPI.send(a,text,arr)}catch(e){res={reply:'Não consegui responder: '+(e&&e.message?e.message:'erro desconhecido'),source:'erro'}}
   const arr2=loadChat(a.id);arr2.push({role:'agent',text:res.reply,ts:Date.now(),src:res.source});saveChat(a.id,arr2);
   if(sceneSel===a.id){renderMsgs(a);updateChatHead()}
   sending=false;$('#sendB').disabled=false;refreshUI();
@@ -1019,9 +1095,9 @@ function autoH(){const t=$('#inp');t.style.height='auto';t.style.height=Math.min
 $('#inp').addEventListener('input',autoH);
 /* configuração do backend */
 const dlg=$('#dlg');
-function openCfg(){$('#dlgUrl').value=getBackend();if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','')}
+function openCfg(){$('#dlgUrl').value=store.get('backend','');$('#dlgTok').value=store.get('token','');if(dlg.showModal)dlg.showModal();else dlg.setAttribute('open','')}
 $('#bCfg').onclick=openCfg;$('#dlgNo').onclick=()=>dlg.close();
-$('#dlgOk').onclick=()=>{store.set('backend',$('#dlgUrl').value.trim());dlg.close();if(sceneSel)updateChatHead()};
+$('#dlgOk').onclick=()=>{store.set('backend',$('#dlgUrl').value.trim());store.set('token',$('#dlgTok').value.trim());pollServer();dlg.close();if(sceneSel)updateChatHead()};
 
 /* =====================================================================
    LOOP
@@ -1036,10 +1112,10 @@ function frame(now){
   requestAnimationFrame(frame);
 }
 function updateBar(){const a=byId[sceneSel];if(!a)return;$('#chBar').style.width=(a.st.working?a.st.prog:0)+'%'}
-resize();fit(false);refreshUI();
+resize();fit(false,'near');refreshUI();
 logEv('<b>Visão Geral</b> abriu o escritório, equipe a postos');
 setTimeout(()=>logEv(`<b>Dendro</b> começou: ${AGENTS[0].tasks[AGENTS[0].st.ti].toLowerCase()}`),400);
-setTimeout(()=>{$('#hint').style.opacity=0},9000);
+setTimeout(()=>{$('#hint').style.opacity=0},9000);pollServer();
 requestAnimationFrame(frame);
 window.__office={AGENTS,openChat,cam,fit,AgentAPI};
 })();
