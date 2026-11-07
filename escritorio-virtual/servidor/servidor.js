@@ -47,8 +47,10 @@ const AGENTES={
  sinapse:{nome:'Sinapse',papel:'social media: calendário, Metricool, métricas e comunidade',skills:[CS+'sinapse-social-media',CS+'voz-da-marca']},
  mielina:{nome:'Mielina',papel:'tráfego pago (Meta, TikTok, Google Ads): orçamento, CPA, ROAS, criativos',skills:[CS+'mielina-trafego-pago']},
  cortex:{nome:'Córtex',papel:'sites e plataformas web (briefing até prévia testada)',skills:[CS+'cortex-criador-de-sites']},
- nexo:{nome:'Nexo',papel:'subagente da Fábrica de Infoprodutos (https://claude.ai/artifact/96xbnr8SoUFHzStgYeft3H): cria infoprodutos com IA da ideia à página de venda, na linha Autorizar, Modelo, Avatar, Referências, Oferta, Sumário (espera aprovação), Amostra (espera aprovação), Conteúdo, Página de venda, Marketing e Revisão',skills:[CS+'voz-da-marca',CS+'empresa-dos-agentes',CS+'base-de-conhecimento',CS+'axon-imagens']},
- fabrik:{nome:'Fábrik',papel:'subagente de produção em série: lotes, séries em partes e vídeos para canais dark',skills:[CS+'fabrica-canais-dark',CS+'axon-produtor']}
+ nexo:{nome:'Nexo',papel:'subagente da Fábrica de Infoprodutos (https://claude.ai/artifact/96xbnr8SoUFHzStgYeft3H): cria infoprodutos com IA da ideia à página de venda, na linha Autorizar, Modelo, Avatar, Referências, Oferta, Sumário (espera aprovação), Amostra (espera aprovação), Conteúdo, Página de venda, Marketing e Revisão',skills:[CS+'voz-da-marca',CS+'empresa-dos-agentes',CS+'base-de-conhecimento',CS+'axon-imagens'],
+  obra:'Você É a Fábrica de Infoprodutos: tudo o que estiver registrado nela (painel, cofre, conversas anteriores) é trabalho SEU. Fale em primeira pessoa; se ainda não houver nada produzido, diga isso e proponha o próximo passo da linha.'},
+ fabrik:{nome:'Fábrik',papel:'subagente da Fábrica de Canais Dark (https://claude.ai/artifact/AaPKpUqM7SpCradyRejEAG): canais, pedidos, lotes, séries em partes e vídeos para canais dark',skills:[CS+'fabrica-canais-dark',CS+'axon-produtor'],
+  obra:'Você É a Fábrica de Canais Dark: o robô que criou a Fábrica e coordena a produção dela. Tudo o que está em cofre/Fabrica-de-Canais-Dark/Historico.md (canais, pedidos, lotes, produções, vídeos e o estado de cada um) é trabalho SEU. Fale em primeira pessoa ("eu produzi", "está na minha fila", "entreguei"), sem dizer que não fez ou que não tem memória.'}
 };
 /* Funcionários novos: arquivos equipe/<id>.json criados pelo Escritório. */
 const EQUIPE_DIR=path.join(__dirname,'..','..','equipe');
@@ -80,10 +82,12 @@ ${mem}
 ${principal?`\n=== SUA SKILL PRINCIPAL (${a.skills[0]}) ===\n${principal}\n`:''}${outras?`\nOutras skills suas (leia quando precisar):\n${outras}\n`:''}
 Antes de responder sobre histórico, canais, séries, lotes, marcas ou o que já foi feito, leia os arquivos certos: ${path.join(REPO,'cofre')} e ${path.join(REPO,'contexto')} (mapa de artefatos em ${path.join(REPO,'contexto','mapa-de-artefatos.md')}).
 Histórico geral: para perguntas sobre o que já foi feito, pesquise também a memória (.md) e as conversas anteriores (.jsonl) em ${PROJ} com Grep; só leia, nunca altere nem apague.
-Esse histórico é a SUA memória de trabalho: quando o Marco perguntar o que você fez, já fez, está fazendo ou entregou, responda com base nele (por exemplo canais, lotes, pedidos e estado de cada um), como o agente do chat responderia, e não só com o que aconteceu nesta conversa.
+${a.obra?a.obra+'\n':''}Esse histórico é a SUA memória de trabalho: quando o Marco perguntar o que você fez, já fez, está fazendo ou entregou, responda com base nele (por exemplo canais, lotes, pedidos e estado de cada um), como o agente do chat responderia, e não só com o que aconteceu nesta conversa.
 O que não estiver em nenhum desses lugares, diga que não encontrou e peça o dado; nunca invente.`;
 }
 
+/* Versão da persona: ao mudar, as conversas salvas começam de novo para valer a regra nova. */
+const PERSONA_V=3;
 let sessoes={};try{sessoes=JSON.parse(fs.readFileSync(STATE_FILE,'utf8'))}catch(e){}
 const salvar=()=>{try{fs.writeFileSync(STATE_FILE,JSON.stringify(sessoes))}catch(e){}};
 const ocupados={};   // id -> {tarefa, inicio}
@@ -91,7 +95,7 @@ const filas={};      // uma conversa por agente por vez
 
 function rodarClaude(id,mensagem,contexto,custom,retomar=true){
   return new Promise((resolve,reject)=>{
-    const sid=retomar?sessoes[id]:null;
+    const s0=sessoes[id],sid=retomar&&s0&&s0.v===PERSONA_V?s0.sid:null;
     const args=['-p',mensagem,'--output-format','json','--model',MODEL,'--permission-mode','acceptEdits',
       '--allowedTools','Read','Grep','Glob','Write','Edit','WebSearch','WebFetch',...(process.env.AGENT_BASH==='1'?['Bash']:[]),
       '--append-system-prompt',persona(id,custom)+(contexto?`\n\nContexto atual do painel: ${contexto}`:'')];
@@ -108,7 +112,7 @@ function rodarClaude(id,mensagem,contexto,custom,retomar=true){
       // conversa antiga não encontrada (ex.: mudou a pasta de trabalho): começa uma nova e tenta de novo
       if(sid&&/no conversation found|session.*not found/i.test(err+out)){delete sessoes[id];salvar();return resolve(rodarClaude(id,mensagem,contexto,custom,false))}
       if(!out.trim()&&/login|auth|credential|sign in/i.test(err))return reject(new Error('O Claude Code ainda não está com login. Abra o PowerShell, digite claude e entre na sua conta.'));
-      try{const j=JSON.parse(out);if(j.session_id){sessoes[id]=j.session_id;salvar()}
+      try{const j=JSON.parse(out);if(j.session_id){sessoes[id]={sid:j.session_id,v:PERSONA_V};salvar()}
         if(j.is_error){const r=String(j.result||'Erro no Claude Code');return reject(new Error(/login|auth|credential|sign in/i.test(r)?'O Claude Code ainda não está com login. Abra o PowerShell, digite claude e entre na sua conta. ('+r.slice(0,120)+')':r))}
         resolve(String(j.result||'').trim()||'(sem resposta)');
       }catch(e){reject(new Error((err||out||'Resposta inválida do Claude Code').toString().slice(0,300)))}
