@@ -80,6 +80,7 @@ ${mem}
 ${principal?`\n=== SUA SKILL PRINCIPAL (${a.skills[0]}) ===\n${principal}\n`:''}${outras?`\nOutras skills suas (leia quando precisar):\n${outras}\n`:''}
 Antes de responder sobre histórico, canais, séries, lotes, marcas ou o que já foi feito, leia os arquivos certos: ${path.join(REPO,'cofre')} e ${path.join(REPO,'contexto')} (mapa de artefatos em ${path.join(REPO,'contexto','mapa-de-artefatos.md')}).
 Histórico geral: para perguntas sobre o que já foi feito, pesquise também a memória (.md) e as conversas anteriores (.jsonl) em ${PROJ} com Grep; só leia, nunca altere nem apague.
+Esse histórico é a SUA memória de trabalho: quando o Marco perguntar o que você fez, já fez, está fazendo ou entregou, responda com base nele (por exemplo canais, lotes, pedidos e estado de cada um), como o agente do chat responderia, e não só com o que aconteceu nesta conversa.
 O que não estiver em nenhum desses lugares, diga que não encontrou e peça o dado; nunca invente.`;
 }
 
