@@ -8,7 +8,25 @@ const http=require('http'),fs=require('fs'),path=require('path'),crypto=require(
 const {spawn}=require('child_process');
 
 const PORT=+process.env.PORT||8787;
-const CLAUDE=process.env.CLAUDE_BIN||'claude';
+const os=require('os');
+/* Acha o Claude Code sozinho: variável CLAUDE_BIN, PATH e pastas comuns (Windows, Mac, Linux). */
+function acharClaude(){
+  if(process.env.CLAUDE_BIN)return process.env.CLAUDE_BIN;
+  const win=process.platform==='win32',home=os.homedir(),ex=win?['.exe','.cmd','']:[''];
+  const cands=[];
+  (process.env.PATH||'').split(path.delimiter).filter(Boolean).forEach(d=>ex.forEach(e=>cands.push(path.join(d,'claude'+e))));
+  const add=(...a)=>cands.push(path.join(...a));
+  if(win){
+    const ap=process.env.APPDATA||path.join(home,'AppData','Roaming'),la=process.env.LOCALAPPDATA||path.join(home,'AppData','Local');
+    add(home,'.local','bin','claude.exe');add(home,'.claude','local','claude.exe');add(ap,'npm','claude.cmd');
+    add(la,'Programs','claude','claude.exe');add(la,'AnthropicClaude','claude.exe');
+    for(const base of [path.join(ap,'Claude','claude-code'),path.join(la,'Claude','claude-code'),path.join(ap,'Claude','claude-code-vm')]){
+      try{for(const v of fs.readdirSync(base).sort().reverse())cands.push(path.join(base,v,'claude.exe'))}catch(e){}}
+  }else{add(home,'.local','bin','claude');add(home,'.claude','local','claude');cands.push('/usr/local/bin/claude','/opt/homebrew/bin/claude')}
+  for(const c of cands){try{if(fs.statSync(c).isFile())return c}catch(e){}}
+  return null;
+}
+const CLAUDE=acharClaude();
 const MODEL=process.env.AGENT_MODEL||'sonnet';               // economia: sonnet por padrão
 const REPO=path.resolve(process.env.AGENT_REPO||path.join(__dirname,'..','..')); // pasta de trabalho dos agentes (skills + cofre)
 const PAGE=path.join(__dirname,'..','index.html');
@@ -55,14 +73,17 @@ function rodarClaude(id,mensagem,contexto){
       '--allowedTools','Read','Grep','Glob','Write','Edit','WebSearch','WebFetch',
       '--append-system-prompt',persona(id)+(contexto?`\n\nContexto atual do painel: ${contexto}`:'')];
     if(sid)args.push('--resume',sid);
-    const p=spawn(CLAUDE,args,{cwd:REPO,stdio:['ignore','pipe','pipe'],env:process.env});
+    if(!CLAUDE)return reject(new Error('Claude Code não encontrado neste computador. Rode o arquivo "Instalar Claude Code" ou defina CLAUDE_BIN.'));
+    const cmd=/\.(cmd|bat)$/i.test(CLAUDE);
+    const p=spawn(CLAUDE,args,{cwd:REPO,stdio:['ignore','pipe','pipe'],env:process.env,shell:cmd,windowsHide:true});
     let out='',err='';const to=setTimeout(()=>{p.kill('SIGTERM');reject(new Error('Tempo esgotado (5 min).'))},TIMEOUT);
     p.stdout.on('data',d=>out+=d);p.stderr.on('data',d=>err+=d);
-    p.on('error',e=>{clearTimeout(to);reject(new Error(e.code==='ENOENT'?'Claude Code não encontrado. Instale e entre na sua conta (comando: claude).':e.message))});
+    p.on('error',e=>{clearTimeout(to);reject(new Error('Não consegui iniciar o Claude Code ('+CLAUDE+'): '+e.message))});
     p.on('close',()=>{
       clearTimeout(to);
+      if(!out.trim()&&/login|auth|credential|sign in/i.test(err))return reject(new Error('O Claude Code ainda não está com login. Abra o PowerShell, digite claude e entre na sua conta.'));
       try{const j=JSON.parse(out);if(j.session_id){sessoes[id]=j.session_id;salvar()}
-        if(j.is_error)return reject(new Error(String(j.result||'Erro no Claude Code')));
+        if(j.is_error){const r=String(j.result||'Erro no Claude Code');return reject(new Error(/login|auth|credential|sign in/i.test(r)?'O Claude Code ainda não está com login. Abra o PowerShell, digite claude e entre na sua conta. ('+r.slice(0,120)+')':r))}
         resolve(String(j.result||'').trim()||'(sem resposta)');
       }catch(e){reject(new Error((err||out||'Resposta inválida do Claude Code').toString().slice(0,300)))}
     });
@@ -90,6 +111,7 @@ http.createServer((req,res)=>{
     }catch(e){return json(res,500,{error:'index.html não encontrado'})}
   }
   if(!okToken(req))return json(res,401,{error:'token inválido'});
+  if(req.method==='GET'&&url.pathname==='/diag')return json(res,200,{claude:CLAUDE,modelo:MODEL,pasta:REPO,plataforma:process.platform});
   if(req.method==='GET'&&url.pathname==='/state'){
     const o={};for(const k in ocupados)o[k]={tarefa:ocupados[k].tarefa,desde:ocupados[k].inicio};
     return json(res,200,{ocupados:o,modelo:MODEL,pasta:REPO});
@@ -112,5 +134,5 @@ http.createServer((req,res)=>{
   }
   json(res,404,{error:'não encontrado'});
 }).listen(PORT,'127.0.0.1',()=>{
-  console.log(`\nEscritório dos Agentes ligado.\n  Abra: http://127.0.0.1:${PORT}\n  Pasta de trabalho dos agentes: ${REPO}\n  Modelo: ${MODEL}\n  Token (para usar a página publicada): ${TOKEN}\n`);
+  console.log(`\nEscritório dos Agentes ligado.\n  Abra: http://127.0.0.1:${PORT}\n  Claude Code: ${CLAUDE||'NAO ENCONTRADO'}\n  Pasta de trabalho dos agentes: ${REPO}\n  Modelo: ${MODEL}\n  Token (para usar a página publicada): ${TOKEN}\n`);
 });
