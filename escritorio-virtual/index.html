@@ -390,10 +390,31 @@ const AgentAPI={
         throw new Error(e.name==='AbortError'?'Tempo esgotado.':(e.message==='Failed to fetch'?'Não consegui falar com o servidor local. Ele está ligado?':e.message));
       }finally{clearTimeout(to)}
     }
+    const smp=await getSample();
+    if(smp){
+      const a=agent,others=AGENTS.filter(x=>x.id!==a.id).map(x=>x.name+' ('+x.role.toLowerCase()+')').join(', ');
+      const intro=`Você é ${a.name}, ${a.kind==='Subagente'?'subagente':'agente'} de ${a.role.toLowerCase()} da equipe do Marco. O que você faz: ${a.does} Você recebe de: ${a.gets}. Você entrega para: ${a.gives}. Skills: ${a.tools.join(', ')}. Seus colegas: ${others}. Situação agora: ${a.st.working?'trabalhando em "'+curTask(a)+'"':'em espera'}.
+Regras: fale sempre em português, chame a pessoa de Marco, respostas curtas e objetivas, sem emojis, só ferramentas gratuitas. Aqui você conversa e planeja, mas ainda não executa ações no computador dele: quando o pedido exigir executar algo, diga o plano e o próximo passo e deixe claro que precisa do servidor local ligado. Nunca diga que publicou, postou, agendou ou gastou verba. Se o pedido é de outro agente, diga qual e resuma o que passaria a ele.
+Responda a conversa abaixo como ${a.name}.`;
+      const msgs=[];for(const m of history){if(m.role==='sys')continue;const r=m.role==='user'?'user':'assistant';if(!msgs.length&&r==='assistant')continue;if(msgs.length&&msgs[msgs.length-1].role===r)msgs[msgs.length-1].content+='\n'+m.text;else msgs.push({role:r,content:m.text})}
+      if(!msgs.length||msgs[msgs.length-1].role!=='user')msgs.push({role:'user',content:text});
+      msgs[0].content=intro+'\n\n'+msgs[0].content;
+      const was=a.st.working;a.st.override='Pedido do Marco: '+text.slice(0,70);a.st.working=true;a.st.real=true;a.st.prog=10;refreshUI();
+      try{const r=await smp(msgs,{cache:false,modelTier:'default'});return{reply:String(r.text||'').trim()||'(sem resposta)',source:'agente (Claude)'}}
+      catch(e){throw new Error(e&&e.code==='not_granted'?'Permita o acesso ao Claude quando a página pedir e tente de novo.':e&&e.code==='rate_limited'?'Muitas mensagens seguidas. Espere um pouco e tente de novo.':(e&&e.message)||'erro ao falar com o Claude')}
+      finally{a.st.real=false;a.st.override=null;a.st.working=was;refreshUI()}
+    }
     await delay(800+Math.random()*900);
     return{reply:simulate(agent,text),source:'simulado'};
   }
 };
+let sampleFn,sampleTried=false;
+async function getSample(){
+  if(sampleTried)return sampleFn||null;sampleTried=true;
+  try{if(window.claude&&window.claude.use){sampleFn=await window.claude.use('sample')||null}}catch(e){sampleFn=null}
+  return sampleFn;
+}
+getSample().then(()=>{if(sceneSel)updateChatHead()});
 /* Estado real: agentes que o servidor está executando agora aparecem como trabalhando. */
 async function pollServer(){
   const srv=getServer();if(!srv){srvOnline=false;return}
@@ -1073,7 +1094,7 @@ function updateChatHead(){
   $('#chSt').innerHTML=`<span class="dot ${w?'on':'idle'}"></span>${w?'Trabalhando':'Em espera'}`;
   $('#chTask').textContent=curTask(a);
   const bar=$('#chBar');bar.style.width=(w?a.st.prog:0)+'%';bar.style.background=a.color;
-  $('#sim').innerHTML=getBackend()?(srvOnline?'Conectado ao servidor local: respostas reais do agente. ':'Servidor local configurado, mas sem resposta. ')+'<a id="simCfg">Ajustar</a>':'Respostas simuladas por enquanto. <a id="simCfg">Conectar o servidor local</a>';
+  $('#sim').innerHTML=getBackend()?(srvOnline?'Conectado ao servidor local: respostas reais do agente. ':'Servidor local configurado, mas sem resposta. ')+'<a id="simCfg">Ajustar</a>':(sampleFn?'Conversando com o agente pelo Claude. Ainda sem executar ações no computador. <a id="simCfg">Ligar o servidor local</a>':'Respostas simuladas por enquanto. <a id="simCfg">Conectar o servidor local</a>');
   const l=$('#simCfg');if(l)l.onclick=openCfg;
   renderDetails(a);
   const hasI=a.id==='nexo'||a.id==='fabrik';$('#tabI').style.display=hasI?'':'none';if(!hasI&&curTab==='i')setTab('c');
