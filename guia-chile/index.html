@@ -395,5 +395,34 @@ footer p+p{margin-top:8px}
   } else { sticky.classList.add('on'); }
 })();
 </script>
+<script>
+/* Painel de Acessos: contador próprio (sem ferramenta externa) */
+(function(){
+  var API='https://app.base44.com/api/apps/6af9e5e47f6dcb2d56788987/entities/Acesso';
+  var qs=new URLSearchParams(location.search), sid;
+  try{ sid=localStorage.getItem('_sid'); if(!sid){ sid=Math.random().toString(36).slice(2)+Date.now().toString(36); localStorage.setItem('_sid',sid);} }catch(e){ sid='x'+Math.random().toString(36).slice(2); }
+  var geo={};
+  function send(tipo,botao){
+    try{ fetch(API,{method:'POST',keepalive:true,headers:{'Content-Type':'application/json','X-App-Id':'6af9e5e47f6dcb2d56788987'},
+      body:JSON.stringify({sessao:sid,tipo:tipo,botao:botao||'',pais:geo.pais||'',cidade:geo.cidade||'',
+        origem:qs.get('utm_source')||'',midia:qs.get('utm_medium')||'',campanha:qs.get('utm_campaign')||'',conteudo:qs.get('utm_content')||'',
+        dispositivo:/Mobi|Android|iPhone/i.test(navigator.userAgent)?'celular':'desktop',
+        referrer:(document.referrer||'').slice(0,200),pagina:location.pathname})}); }catch(e){}
+  }
+  function start(){
+    send('visita');
+    document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.closest('[data-checkout]'); if(a) send('clique_compra',a.getAttribute('data-ev')||''); },true);
+    var v=document.getElementById('vsl'), tap=document.getElementById('tap');
+    if(v){ var m={25:0,50:0,75:0,95:0}, played=0;
+      function pl(){ if(!played&&!v.muted){played=1;send('vsl_play');} }
+      if(tap) tap.addEventListener('click',function(){ setTimeout(function(){ if(!played){played=1;send('vsl_play');} },300); });
+      v.addEventListener('play',pl);
+      v.addEventListener('timeupdate',function(){ if(v.muted||!v.duration)return; var p=v.currentTime/v.duration*100;
+        for(var k in m){ if(!m[k]&&p>=+k){ m[k]=1; send('vsl_'+k); } } }); }
+  }
+  var done=0; function go(){ if(!done){done=1;start();} }
+  try{ fetch('https://get.geojs.io/v1/ip/geo.json').then(function(r){return r.json()}).then(function(j){ geo={pais:j.country||'',cidade:j.city||''}; go(); }).catch(go); setTimeout(go,2500); }catch(e){ go(); }
+})();
+</script>
 </body>
 </html>
