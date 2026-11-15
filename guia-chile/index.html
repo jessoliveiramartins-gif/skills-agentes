@@ -421,7 +421,7 @@ footer p+p{margin-top:8px}
         for(var k in m){ if(!m[k]&&p>=+k){ m[k]=1; send('vsl_'+k); } } }); }
   }
   var done=0; function go(){ if(!done){done=1;start();} }
-  try{ fetch('https://get.geojs.io/v1/ip/geo.json').then(function(r){return r.json()}).then(function(j){ geo={pais:j.country||'',cidade:j.city||''}; go(); }).catch(go); setTimeout(go,2500); }catch(e){ go(); }
+  try{ fetch('https://get.geojs.io/v1/ip/geo.json').then(function(r){return r.json()}).then(function(j){ geo={pais:j.country_code||'',cidade:j.city||''}; go(); }).catch(go); setTimeout(go,2500); }catch(e){ go(); }
 })();
 </script>
 </body>
