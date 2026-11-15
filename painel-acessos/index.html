@@ -1,0 +1,66 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>Painel de Acessos</title>
+<style>
+:root{--bg:#0f1115;--card:#181b22;--tx:#e8eaf0;--mut:#8b93a7;--ac:#e8b84a;--bd:#272b36}
+*{box-sizing:border-box}body{background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,sans-serif;padding:16px;max-width:1100px;margin:auto}
+h1{font-size:20px;margin:4px 0 12px}h2{font-size:13px;color:var(--mut);margin:0 0 10px;text-transform:uppercase;letter-spacing:.05em}
+.bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}select,button{background:var(--card);color:var(--tx);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;font:inherit}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;margin-bottom:14px;overflow-x:auto}
+.kpi b{display:block;font-size:26px;color:var(--ac)}.kpi span{color:var(--mut);font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--bd);white-space:nowrap}th{color:var(--mut);font-weight:600}
+td.n,th.n{text-align:right}.row{display:flex;align-items:center;gap:8px;margin:6px 0;font-size:13px}.row i{display:block;height:14px;background:var(--ac);border-radius:4px;min-width:2px}
+.row em{font-style:normal;color:var(--mut)}.lab{width:130px;flex:none;overflow:hidden;text-overflow:ellipsis}.empty{color:var(--mut);padding:20px;text-align:center}
+svg{width:100%;height:170px}small{color:var(--mut)}
+</style></head><body>
+<h1>Painel de Acessos · Página de vendas</h1>
+<div class="bar"><select id="per"><option value="0">Hoje</option><option value="7" selected>7 dias</option><option value="30">30 dias</option><option value="9999">Tudo</option></select>
+<select id="pais"><option value="">Todos os países</option></select><select id="camp"><option value="">Todas as campanhas</option></select><select id="ori"><option value="">Todas as origens</option></select>
+<button id="ref">Atualizar</button><small id="upd" style="align-self:center"></small></div>
+<div id="msg" class="empty" style="display:none">Aguardando os primeiros acessos…</div>
+<div id="main">
+<div class="kpis" id="kpis"></div>
+<div class="card"><h2>Visitas e cliques por dia</h2><div id="line"></div></div>
+<div class="grid"><div class="card"><h2>Funil da VSL (visitantes únicos)</h2><div id="fun"></div></div>
+<div class="card"><h2>Países</h2><div id="pa"></div></div></div>
+<div class="card"><h2>Campanha · origem · mídia</h2><div id="tc"></div></div>
+<div class="grid"><div class="card"><h2>Cliques por botão</h2><div id="tb"></div></div>
+<div class="card"><h2>Dispositivo</h2><div id="td"></div></div></div>
+<div class="card"><h2>Últimos acessos</h2><div id="ul"></div></div></div>
+<script>
+const A='6af9e5e47f6dcb2d56788987',URL_='https://app.base44.com/api/apps/'+A+'/entities/Acesso';
+let D=[];const $=id=>document.getElementById(id);
+const nome=c=>{try{return c?new Intl.DisplayNames(['pt-BR'],{type:'region'}).of(c)+' ('+c+')':'(desconhecido)'}catch(e){return c||'(desconhecido)'}};
+async function load(){let all=[],skip=0;for(;;){const r=await fetch(URL_+'?limit=1000&skip='+skip+'&sort=-created_date',{headers:{'X-App-Id':A}});const j=await r.json();if(!Array.isArray(j))break;all=all.concat(j);if(j.length<1000||all.length>=20000)break;skip+=1000}
+D=all.filter(x=>x.sessao!=='teste');fill();render();$('upd').textContent='atualizado '+new Date().toLocaleTimeString('pt-BR')}
+function opts(id,key,fmt){const s=$(id),v=s.value,set=[...new Set(D.map(x=>x[key]||''))].sort();s.length=1;set.forEach(k=>s.add(new Option(fmt?fmt(k):(k||'(vazio)'),k)));s.value=set.includes(v)?v:''}
+function fill(){opts('pais','pais',nome);opts('camp','campanha');opts('ori','origem')}
+const uniq=a=>new Set(a.map(x=>x.sessao)).size;
+function group(arr,keyf){const m={};arr.forEach(x=>{const k=keyf(x);(m[k]=m[k]||[]).push(x)});return m}
+const T=x=>new Date(x.created_date+'Z'),day=x=>T(x).toLocaleDateString('sv-SE');
+const pc=(a,b)=>b?(a/b*100).toFixed(1)+'%':'–';
+function tbl(h,rows){return rows.length?'<table><tr>'+h.map((x,i)=>'<th'+(i>2&&h.length<8?' class=n':'')+'>'+x+'</th>').join('')+'</tr>'+rows.map(r=>'<tr>'+r.map((c,i)=>'<td'+(i>2&&h.length<8?' class=n':'')+'>'+c+'</td>').join('')+'</tr>').join('')+'</table>':'<div class="empty">sem dados</div>'}
+function bars(items){const mx=Math.max(1,...items.map(i=>i[1]));return items.length?items.map(i=>`<div class="row"><span class="lab">${i[0]}</span><i style="width:${i[1]/mx*50}%"></i><em>${i[1]}${i[2]?' · '+i[2]:''}</em></div>`).join(''):'<div class="empty">sem dados</div>'}
+function render(){
+$('msg').style.display=D.length?'none':'block';$('main').style.display=D.length?'block':'none';if(!D.length)return;
+const per=+$('per').value,lim=per===0?new Date(new Date().toLocaleDateString('sv-SE')+'T00:00:00').getTime():Date.now()-per*864e5;
+const f=D.filter(x=>T(x).getTime()>=lim&&(!$('pais').value||(x.pais||'')===$('pais').value)&&(!$('camp').value||(x.campanha||'')===$('camp').value)&&(!$('ori').value||(x.origem||'')===$('ori').value));
+const vis=f.filter(x=>x.tipo==='visita'),cl=f.filter(x=>x.tipo==='clique_compra'),pl=f.filter(x=>x.tipo==='vsl_play');
+const uv=uniq(vis),uc=uniq(cl),up=uniq(pl);
+$('kpis').innerHTML=[['Visitas',vis.length],['Visitantes únicos',uv],['Cliques em comprar',cl.length],['Taxa de clique',pc(uc,uv)],['Assistiram a VSL',pc(up,uv)],['Clicaram após ver a VSL',pc(uniq(cl.filter(c=>pl.some(p=>p.sessao===c.sessao))),up)]].map(k=>`<div class="card kpi" style="margin:0"><b>${k[1]}</b><span>${k[0]}</span></div>`).join('');
+const dv=group(vis,day),dc=group(cl,day),days=[...new Set([...Object.keys(dv),...Object.keys(dc)])].sort(),mx=Math.max(1,...days.map(d=>Math.max((dv[d]||[]).length,(dc[d]||[]).length)));
+const W=600,H=140,px=i=>days.length>1?20+i*(W-40)/(days.length-1):W/2,py=v=>H-10-v/mx*(H-30);
+const path=m=>days.map((d,i)=>(i?'L':'M')+px(i)+' '+py((m[d]||[]).length)).join(' ');
+$('line').innerHTML=days.length?`<svg viewBox="0 0 ${W} ${H+20}"><path d="${path(dv)}" fill="none" stroke="#e8b84a" stroke-width="2.5"/><path d="${path(dc)}" fill="none" stroke="#5aa9ff" stroke-width="2.5"/>${days.map((d,i)=>`<circle cx="${px(i)}" cy="${py((dv[d]||[]).length)}" r="3" fill="#e8b84a"/><circle cx="${px(i)}" cy="${py((dc[d]||[]).length)}" r="3" fill="#5aa9ff"/>${days.length<=14||i%Math.ceil(days.length/10)==0?`<text x="${px(i)}" y="${H+14}" fill="#8b93a7" font-size="10" text-anchor="middle">${d.slice(5)}</text>`:''}`).join('')}</svg><small><span style="color:#e8b84a">● visitas</span> &nbsp; <span style="color:#5aa9ff">● cliques</span> &nbsp; máx ${mx}/dia</small>`:'<div class="empty">sem dados</div>';
+const st=[['Visitaram',uv],['Deram play',up]].concat(['25','50','75','95'].map(k=>['Chegou a '+k+'%',uniq(f.filter(x=>x.tipo==='vsl_'+k))]),[['Clicaram em comprar',uc]]);
+$('fun').innerHTML=bars(st.map(s=>[s[0],s[1],pc(s[1],uv)]));
+$('pa').innerHTML=bars(Object.entries(group(vis,x=>x.pais||'')).map(([k,v])=>[nome(k),uniq(v)]).sort((a,b)=>b[1]-a[1]).slice(0,12));
+const gk=x=>[x.campanha||'(sem utm)',x.origem||'-',x.midia||'-'].join('|'),gv=group(vis,gk),gc=group(cl,gk);
+$('tc').innerHTML=tbl(['Campanha','Origem','Mídia','Visitas','Cliques','Taxa'],Object.keys(gv).map(k=>{const v=uniq(gv[k]),c=uniq(gc[k]||[]);return k.split('|').concat([v,c,pc(c,v)])}).sort((a,b)=>b[3]-a[3]));
+$('tb').innerHTML=bars(Object.entries(group(cl,x=>x.botao||'(sem nome)')).map(([k,v])=>[k,v.length]).sort((a,b)=>b[1]-a[1]));
+$('td').innerHTML=bars(Object.entries(group(vis,x=>x.dispositivo||'?')).map(([k,v])=>[k,uniq(v)]));
+$('ul').innerHTML=tbl(['Quando','Evento','Botão','País','Campanha','Origem','Disp.'],f.slice(0,20).map(x=>[T(x).toLocaleString('pt-BR'),x.tipo,x.botao||'',x.pais||'',x.campanha||'',x.origem||'',x.dispositivo||'']));
+}
+['per','pais','camp','ori'].forEach(i=>$(i).onchange=render);$('ref').onclick=load;load();setInterval(load,30000);
+</script></body></html>
